@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test hlasů – TENESCO</title>
+<style>
+  :root { --brand:#D8232A; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background:#f4f5f7; color:#181b21; padding:28px 18px; }
+  .wrap { max-width: 560px; margin: 0 auto; }
+  h1 { font-size: 21px; margin: 0 0 6px; }
+  p.sub { color:#5b616e; margin:0 0 18px; font-size:14px; line-height:1.5; }
+  textarea { width:100%; border:1px solid #e2e3e5; border-radius:12px; padding:11px 14px; font-size:15px; font-family:inherit; resize:vertical; min-height:64px; }
+  .row { display:flex; align-items:center; gap:10px; background:#fff; border:1px solid #ececef; border-radius:14px; padding:12px 14px; margin:8px 0; box-shadow:0 1px 3px rgba(20,20,40,.05); transition:.15s; }
+  .row.playing { border-color: var(--brand); box-shadow:0 6px 18px -6px rgba(216,35,42,.35); }
+  .name { font-weight:700; font-size:15px; flex:1; }
+  .name small { display:block; font-weight:500; color:#8a909c; font-size:12px; }
+  button.play { border:none; cursor:pointer; background:linear-gradient(150deg,#F03A45,var(--brand)); color:#fff; font-weight:700; font-size:14px; border-radius:10px; padding:9px 16px; box-shadow:0 5px 12px -4px rgba(216,35,42,.5); }
+  button.play:hover { filter:brightness(1.05); }
+  button.play:disabled { opacity:.5; cursor:default; }
+  .hint { margin-top:20px; padding:14px; background:#fff; border:1px dashed #d8232a55; border-radius:12px; font-size:13.5px; line-height:1.55; color:#3b4150; }
+  .err { color:var(--brand); font-size:13px; margin-top:8px; min-height:18px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🎙️ Test českých hlasů (Google Chirp3-HD)</h1>
+  <p class="sub">Klikni na „Přehrát" u každého hlasu, poslechni a vyber ten nejlidštější. Pak mi napiš jeho jméno (např. „Leda") a nastavím ho jako hlas asistenta.</p>
+
+  <textarea id="text">Dobrý den, ráda vám poradím s objednávkou, dopravou i reklamací. Přeji vám příjemný den!</textarea>
+  <div class="err" id="err"></div>
+  <div id="list"></div>
+
+  <div class="hint">👉 Který zní nejpřirozeněji? Napiš mi jeho jméno a já ho nasadím do chatbota.</div>
+</div>
+
+<script>
+const VOICES = [
+  "Achernar","Aoede","Autonoe","Callirrhoe","Despina","Erinome",
+  "Gacrux","Kore","Laomedeia","Leda","Pulcherrima","Sulafat","Vindemiatrix","Zephyr"
+];
+const listEl = document.getElementById("list");
+const errEl = document.getElementById("err");
+let csrf = null;
+let current = null;
+
+fetch("/api/csrf-token").then(r => r.json()).then(d => { csrf = d.token; }).catch(()=>{});
+
+VOICES.forEach(short => {
+  const full = "cs-CZ-Chirp3-HD-" + short;
+  const row = document.createElement("div");
+  row.className = "row";
+  row.innerHTML = '<div class="name">' + short + '<small>' + full + '</small></div>' +
+                  '<button class="play" data-voice="' + full + '">▶ Přehrát</button>';
+  listEl.appendChild(row);
+});
+
+listEl.addEventListener("click", function(e){
+  const btn = e.target.closest("button.play");
+  if (!btn) return;
+  const voice = btn.dataset.voice;
+  const text = document.getElementById("text").value.trim() || "Dobrý den.";
+  errEl.textContent = "";
+  if (current) { try { current.pause(); } catch(_){} }
+  document.querySelectorAll(".row").forEach(r=>r.classList.remove("playing"));
+  btn.disabled = true; btn.textContent = "⏳ Generuji…";
+  fetch("/tts", {
+    method:"POST",
+    headers:{ "Content-Type":"application/json", "X-CSRF-Token": csrf || "" },
+    body: JSON.stringify({ text: text, language:"cs", voice: voice })
+  })
+  .then(r => { if(!r.ok) throw new Error("HTTP "+r.status); return r.blob(); })
+  .then(blob => {
+    const url = URL.createObjectURL(blob);
+    const a = new Audio(url);
+    current = a;
+    btn.closest(".row").classList.add("playing");
+    a.onended = () => { URL.revokeObjectURL(url); btn.closest(".row").classList.remove("playing"); };
+    a.play();
+    btn.disabled = false; btn.textContent = "▶ Přehrát";
+  })
+  .catch(err => { errEl.textContent = "Chyba: " + err.message; btn.disabled = false; btn.textContent = "▶ Přehrát"; });
+});
+</script>
+</body>
+</html>
