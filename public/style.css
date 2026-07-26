@@ -553,7 +553,66 @@
 .powered-by a:hover{ color: var(--brand); }
 .eniq-panel.dark-mode .powered-by{ border-top-color: #2a2530; }
 
-/* ============== Page Link Prompt ============== */
+/* ============== Redirect Bar (mimo chat) ============== */
+.redirect-bar{
+    display: none;
+    margin: 0;
+    padding: 10px 14px 0;
+    border-top: 1px solid var(--line);
+    background: linear-gradient(180deg, rgba(var(--brand-rgb),0.06), transparent);
+    animation: slideUp 0.25s ease-out;
+}
+.redirect-bar.visible{ display: block; }
+.redirect-bar-inner{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 10px 12px;
+    background: #fff;
+    border: 1px solid rgba(var(--brand-rgb),0.2);
+    border-radius: 12px;
+    box-shadow: var(--shadow-soft);
+}
+.redirect-bar-text{
+    flex: 1 1 180px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--brand-deep);
+    line-height: 1.35;
+}
+.redirect-bar-buttons{
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+.redirect-bar-btn{
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+}
+.redirect-bar-btn-yes{
+    background: linear-gradient(150deg, var(--brand-2), var(--brand));
+    color: #fff;
+    box-shadow: 0 4px 10px -2px rgba(var(--brand-rgb), 0.4);
+}
+.redirect-bar-btn-yes:hover{ transform: translateY(-1px); }
+.redirect-bar-btn-no{
+    background: #eef0f3;
+    color: #5b616e;
+}
+.redirect-bar-btn-no:hover{ background: #e2e5e9; }
+.eniq-panel.dark-mode .redirect-bar{ border-top-color: #2a2530; background: linear-gradient(180deg, rgba(var(--brand-rgb),0.08), transparent); }
+.eniq-panel.dark-mode .redirect-bar-inner{ background: #221c28; border-color: #342b3c; }
+.eniq-panel.dark-mode .redirect-bar-text{ color: #f3f4f6; }
+.eniq-panel.dark-mode .redirect-bar-btn-no{ background: #2a2330; color: #cbd0d8; }
+
+/* ============== Page Link Prompt (legacy – unused) ============== */
 .page-link-prompt {
     margin: 12px auto 16px auto;
     padding: 12px 14px;

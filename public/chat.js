@@ -62,6 +62,7 @@
     const animToggle      = document.getElementById("animToggle");
     const fontSelect      = document.getElementById("fontSelect");
     const consentBox      = document.getElementById("consentBox");
+    const redirectBar       = document.getElementById("redirectBar");
     const voiceView       = document.getElementById("voiceView");
     const modeChatBtn     = document.getElementById("modeChatBtn");
     const modeVoiceBtn    = document.getElementById("modeVoiceBtn");
@@ -93,8 +94,9 @@
             expandLabel: "Rozšířit chat",
             themeLabel: "Tmavý režim",
             error: "Omlouvám se, něco se pokazilo. Zkuste to prosím znovu, nebo napište na info@autoaws.cz.",
-            showOnPage: "Chcete přejít na stránku Auto AWS?",
-            btnYes: "Ano, přejít",
+            showOnPage: "Chcete přejít do sekce",
+            btnYes: "Ano",
+            btnNo: "Ne",
             redirecting: "Přesměrovávám…",
             terms: "Na webu autoaws.cz není samostatná stránka <strong>Obchodní podmínky</strong> — konkrétní smlouva se řeší při koupi. Obecné info: <strong>autoaws.cz/financovani</strong>, <strong>autoaws.cz/zaruka</strong>, <strong>autoaws.cz/kontakt</strong>. Dotazy: <strong>+420 777 834 466</strong>.",
             shipping: "Auto AWS je prodejce vozů — <strong>zásilková doprava se neuplatňuje</strong>. Vůz si převezmete v showroomu v Uherském Brodě (Cihlářská 422), ideálně po domluvě na <strong>+420 777 834 466</strong>. Financování na místě: <strong>autoaws.cz/financovani</strong>.",
@@ -175,7 +177,7 @@
 
     // Doplnění chybějících polí u ostatních jazyků (fallback na češtinu)
     (function fillUiDefaults() {
-        var keys = ["welcome", "welcomeHtml", "placeholder", "expandLabel", "themeLabel", "error", "showOnPage", "btnYes", "redirecting",
+        var keys = ["welcome", "welcomeHtml", "placeholder", "expandLabel", "themeLabel", "error", "showOnPage", "btnYes", "btnNo", "redirecting",
             "terms", "shipping", "contact", "returns", "gdpr", "articles", "about", "promo", "food", "treats"];
         ["sk", "en", "de", "fr", "es", "it", "pl", "uk"].forEach(function (lang) {
             if (!UI_TEXT[lang]) UI_TEXT[lang] = {};
@@ -189,64 +191,68 @@
 
     const QUICK_ACTIONS_TEXT = {
         cs: [
-            { key: "terms",    label: "Obchodní podmínky" },
-            { key: "shipping", label: "Doprava a platba" },
-            { key: "contact",  label: "Kontakt" },
+            { key: "contact",  label: "Kontakt",           redirect: "https://autoaws.cz/kontakt/", redirectLabel: "Kontakt" },
+            { key: "shipping", label: "Doprava a platba",  redirect: "https://autoaws.cz/financovani/", redirectLabel: "Financování" },
             { key: "returns",  label: "Reklamace" },
-            { key: "gdpr",     label: "GDPR" },
-            { key: "articles", label: "Návody / články" },
-            { key: "about",    label: "O firmě" },
-            { key: "promo",    label: "Akce / slevy" }
+            { key: "terms",    label: "Obchodní podmínky" }
         ],
         sk: [
-            { key: "food",     label: "Nabídka aut" },
-            { key: "treats",   label: "Maškrty" },
-            { key: "shipping", label: "Ověření vozů" },
-            { key: "contact",  label: "Kontakt" }
+            { key: "contact",  label: "Kontakt",          redirect: "https://autoaws.cz/kontakt/", redirectLabel: "Kontakt" },
+            { key: "shipping", label: "Doprava a platba", redirect: "https://autoaws.cz/financovani/", redirectLabel: "Financovanie" },
+            { key: "returns",  label: "Reklamácia" },
+            { key: "terms",    label: "Obchodné podmienky" }
         ],
         en: [
-            { key: "food",     label: "Pet food" },
-            { key: "treats",   label: "Treats" },
-            { key: "shipping", label: "Shipping" },
-            { key: "contact",  label: "Contact" }
+            { key: "contact",  label: "Contact",          redirect: "https://autoaws.cz/kontakt/", redirectLabel: "Contact" },
+            { key: "shipping", label: "Delivery & payment", redirect: "https://autoaws.cz/financovani/", redirectLabel: "Financing" },
+            { key: "returns",  label: "Claims" },
+            { key: "terms",    label: "Terms" }
         ],
         de: [
-            { key: "food",     label: "Futter" },
-            { key: "treats",   label: "Snacks" },
-            { key: "shipping", label: "Versand" },
-            { key: "contact",  label: "Kontakt" }
+            { key: "contact",  label: "Kontakt",          redirect: "https://autoaws.cz/kontakt/", redirectLabel: "Kontakt" },
+            { key: "shipping", label: "Lieferung & Zahlung", redirect: "https://autoaws.cz/financovani/", redirectLabel: "Finanzierung" },
+            { key: "returns",  label: "Reklamation" },
+            { key: "terms",    label: "AGB" }
         ],
         fr: [
-            { key: "food",     label: "Aliments" },
-            { key: "treats",   label: "Friandises" },
-            { key: "shipping", label: "Livraison" },
-            { key: "contact",  label: "Contact" }
+            { key: "contact",  label: "Contact",          redirect: "https://autoaws.cz/kontakt/", redirectLabel: "Contact" },
+            { key: "shipping", label: "Livraison & paiement", redirect: "https://autoaws.cz/financovani/", redirectLabel: "Financement" },
+            { key: "returns",  label: "Réclamation" },
+            { key: "terms",    label: "Conditions" }
         ],
         es: [
-            { key: "food",     label: "Alimentos" },
-            { key: "treats",   label: "Premios" },
-            { key: "shipping", label: "Envío" },
-            { key: "contact",  label: "Contacto" }
+            { key: "contact",  label: "Contacto",         redirect: "https://autoaws.cz/kontakt/", redirectLabel: "Contacto" },
+            { key: "shipping", label: "Envío y pago",     redirect: "https://autoaws.cz/financovani/", redirectLabel: "Financiación" },
+            { key: "returns",  label: "Reclamación" },
+            { key: "terms",    label: "Condiciones" }
         ],
         it: [
-            { key: "food",     label: "Alimenti" },
-            { key: "treats",   label: "Snack" },
-            { key: "shipping", label: "Spedizione" },
-            { key: "contact",  label: "Contatti" }
+            { key: "contact",  label: "Contatti",         redirect: "https://autoaws.cz/kontakt/", redirectLabel: "Contatti" },
+            { key: "shipping", label: "Consegna e pagamento", redirect: "https://autoaws.cz/financovani/", redirectLabel: "Finanziamento" },
+            { key: "returns",  label: "Reclamo" },
+            { key: "terms",    label: "Condizioni" }
         ],
         pl: [
-            { key: "food",     label: "Karma" },
-            { key: "treats",   label: "Przysmaki" },
-            { key: "shipping", label: "Dostawa" },
-            { key: "contact",  label: "Kontakt" }
+            { key: "contact",  label: "Kontakt",          redirect: "https://autoaws.cz/kontakt/", redirectLabel: "Kontakt" },
+            { key: "shipping", label: "Dostawa i płatność", redirect: "https://autoaws.cz/financovani/", redirectLabel: "Finansowanie" },
+            { key: "returns",  label: "Reklamacja" },
+            { key: "terms",    label: "Regulamin" }
         ],
         uk: [
-            { key: "food",     label: "Корм" },
-            { key: "treats",   label: "Ласощі" },
-            { key: "shipping", label: "Доставка" },
-            { key: "contact",  label: "Контакти" }
+            { key: "contact",  label: "Контакти",         redirect: "https://autoaws.cz/kontakt/", redirectLabel: "Контакти" },
+            { key: "shipping", label: "Доставка й оплата", redirect: "https://autoaws.cz/financovani/", redirectLabel: "Фінансування" },
+            { key: "returns",  label: "Рекламація" },
+            { key: "terms",    label: "Умови" }
         ]
     };
+
+    function getQuickActionMeta(actionKey) {
+        var list = QUICK_ACTIONS_TEXT[selectedLang] || QUICK_ACTIONS_TEXT.cs;
+        for (var i = 0; i < list.length; i++) {
+            if (list[i].key === actionKey) return list[i];
+        }
+        return null;
+    }
 
     // ── Extra UI texts (disclaimer, consent, settings, voice) ──
     const EXTRA_TEXT = {
@@ -650,72 +656,64 @@
         }
     }
 
-    // ── Recommended links ───────────────────────────────────
-    function showPageLinkPrompt(url, title, imageUrl) {
-        var promptDiv = document.createElement("div");
-        promptDiv.className = "page-link-prompt";
+    // ── Redirect bar (mimo chat-box) ─────────────────────────
+    function hideRedirectBar() {
+        if (!redirectBar) return;
+        redirectBar.hidden = true;
+        redirectBar.innerHTML = "";
+        redirectBar.classList.remove("visible");
+    }
 
-        var headerWrapper = document.createElement("div");
-        headerWrapper.className = "page-link-header-wrapper";
+    function showRedirectBar(url, sectionTitle) {
+        if (!redirectBar || !url) return;
+        var ui = UI_TEXT[selectedLang] || UI_TEXT.cs;
+        var title = sectionTitle || "";
+        redirectBar.innerHTML = "";
+        redirectBar.hidden = false;
+        redirectBar.classList.add("visible");
 
-        if (imageUrl) {
-            var imgEl = document.createElement("img");
-            imgEl.src = imageUrl;
-            imgEl.className = "page-link-product-img";
-            headerWrapper.appendChild(imgEl);
-        }
+        var inner = document.createElement("div");
+        inner.className = "redirect-bar-inner";
 
-        if (title) {
-            var titleDiv = document.createElement("div");
-            titleDiv.className = "page-link-product-title";
-            titleDiv.textContent = title;
-            headerWrapper.appendChild(titleDiv);
-        }
+        var text = document.createElement("div");
+        text.className = "redirect-bar-text";
+        text.textContent = ui.showOnPage + (title ? " " + title + "?" : "?");
 
-        if (title || imageUrl) {
-            promptDiv.appendChild(headerWrapper);
-        }
-
-        var textDiv = document.createElement("div");
-        textDiv.className = "page-link-text";
-        textDiv.textContent = UI_TEXT[selectedLang].showOnPage;
-
-        var buttonsDiv = document.createElement("div");
-        buttonsDiv.className = "page-link-buttons";
+        var buttons = document.createElement("div");
+        buttons.className = "redirect-bar-buttons";
 
         var btnYes = document.createElement("button");
-        btnYes.className = "page-link-btn page-link-btn-yes";
-        btnYes.textContent = UI_TEXT[selectedLang].btnYes;
-
+        btnYes.type = "button";
+        btnYes.className = "redirect-bar-btn redirect-bar-btn-yes";
+        btnYes.textContent = ui.btnYes;
         btnYes.onclick = function () {
-            btnYes.innerHTML = '<span class="spinner"></span> ' + UI_TEXT[selectedLang].redirecting;
             btnYes.disabled = true;
+            btnYes.textContent = ui.redirecting;
             sessionStorage.setItem("eniq_chat_open", "true");
-
             var overlay = document.createElement("div");
             overlay.className = "page-transition-overlay";
             overlay.innerHTML = '<div class="transition-spinner"></div>';
             document.body.appendChild(overlay);
-
             setTimeout(function () { overlay.classList.add("active"); }, 10);
             setTimeout(function () { gotoProduct(url); }, 450);
         };
 
         var btnNo = document.createElement("button");
-        btnNo.className = "page-link-btn page-link-btn-no";
-        btnNo.textContent = "✖ Skrýt";
-        btnNo.onclick = function () {
-            promptDiv.classList.add("fade-out");
-            setTimeout(function () { promptDiv.remove(); }, 300);
-        };
+        btnNo.type = "button";
+        btnNo.className = "redirect-bar-btn redirect-bar-btn-no";
+        btnNo.textContent = ui.btnNo || "Ne";
+        btnNo.onclick = function () { hideRedirectBar(); };
 
-        buttonsDiv.appendChild(btnYes);
-        buttonsDiv.appendChild(btnNo);
-        promptDiv.appendChild(textDiv);
-        promptDiv.appendChild(buttonsDiv);
+        buttons.appendChild(btnYes);
+        buttons.appendChild(btnNo);
+        inner.appendChild(text);
+        inner.appendChild(buttons);
+        redirectBar.appendChild(inner);
+    }
 
-        chatBox.appendChild(promptDiv);
-        scrollToBottom();
+    function maybeShowRedirectFromLinks(links) {
+        if (!links || links.length !== 1 || !links[0] || !links[0].url) return;
+        showRedirectBar(links[0].url, links[0].title || null);
     }
 
     // ── Send message ────────────────────────────────────────
@@ -752,11 +750,7 @@
             sessionStorage.setItem("session_id", sessionId);
 
             addMessage(data.response, "bot", true, true, true, function () {
-                if (data.recommended_links && data.recommended_links.length > 0) {
-                    data.recommended_links.forEach(function (link) {
-                        showPageLinkPrompt(link.url, link.title || null, link.image || null);
-                    });
-                }
+                maybeShowRedirectFromLinks(data.recommended_links);
             });
         })
         .catch(function () {
@@ -952,6 +946,7 @@
     // Nothing is deleted from any database — only the customer's on-screen history.
     function clearConversation() {
         chatBox.innerHTML = "";
+        hideRedirectBar();
         sessionStorage.removeItem("eniq_chat_history");
         sessionStorage.removeItem("session_id");
         sessionId = null;
@@ -1137,35 +1132,13 @@
     // Navigate the customer to a product page — works standalone AND when embedded in an iframe on autoaws.cz.
     // In demo mode open a new tab so the presentation page stays open.
     function gotoProduct(url) {
-        if (window.TENESCO_DEMO) { window.open(url, "_blank", "noopener"); return; }
+        if (window.AUTOAWS_DEMO) { window.open(url, "_blank", "noopener"); return; }
         try { (window.top || window).location.href = url; }
         catch (e) { window.location.href = url; }
     }
-    // Clickable product buttons inside the voice transcript (voice can't click a spoken URL)
+    // Voice mode: offer redirect via the same bar outside the chat (not inside transcript)
     function appendVoiceLinks(links) {
-        var el = document.getElementById("voiceTranscript");
-        if (!el || !links || !links.length) return;
-        var wrap = document.createElement("div");
-        wrap.className = "vt-links";
-        links.forEach(function (link) {
-            if (!link || !link.url) return;
-            var a = document.createElement("button");
-            a.type = "button";
-            a.className = "vt-link-chip";
-            a.innerHTML = '<span class="vt-link-ic">🔗</span><span>' + (link.title || "Zobrazit produkt") + "</span>";
-            a.onclick = function () {
-                sessionStorage.setItem("eniq_chat_open", "true");
-                var overlay = document.createElement("div");
-                overlay.className = "page-transition-overlay";
-                overlay.innerHTML = '<div class="transition-spinner"></div>';
-                document.body.appendChild(overlay);
-                setTimeout(function () { overlay.classList.add("active"); }, 10);
-                setTimeout(function () { gotoProduct(link.url); }, 450);
-            };
-            wrap.appendChild(a);
-        });
-        el.appendChild(wrap);
-        el.scrollTop = el.scrollHeight;
+        maybeShowRedirectFromLinks(links);
     }
     // Update only the in-progress sentence; reuse the same node so it doesn't blink
     function updateVoiceLive(text) {
@@ -1672,6 +1645,7 @@
     }
 
     function closeChat() {
+        hideRedirectBar();
         // Always release the mic on close — between turns voiceActive is false but the
         // stream stays alive for instant turns, so guard on the stream too (no leak).
         if (voiceStream || voiceActive) stopVoiceSession();
@@ -1824,6 +1798,10 @@
                 setTimeout(function () {
                     removeSearching();
                     addMessage(actionAns, "bot", true, true, true);
+                    var meta = getQuickActionMeta(action);
+                    if (meta && meta.redirect) {
+                        showRedirectBar(meta.redirect, meta.redirectLabel || meta.label);
+                    }
                 }, 650);
             }
         } else if (target.closest("#settingsBtn")) {
