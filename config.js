@@ -1,0 +1,26 @@
+/**
+ * Auto AWS Asistent — výchozí konfigurace commitovaná v repozitáři.
+ * process.env má přednost (např. přepsání v Coolify), jinak platí tyto hodnoty.
+ */
+module.exports = {
+    NODE_ENV: "production",
+    PORT: "3000",
+
+    ALLOWED_ORIGINS: [
+        "http://localhost:3000",
+        "http://qgowo0wk8wc08s8w8c4c8c4s.158.220.118.165.sslip.io",
+        "https://qgowo0wk8wc08s8w8c4c8c4s.158.220.118.165.sslip.io",
+        "https://autoaws.cz",
+        "https://www.autoaws.cz"
+    ].join(","),
+
+    EUROUTER_API_KEY: "eur_HCynaNPh77ef.6GheiD0K2dZe5zz2dZnbMGi7KYg71JOi",
+    EUROUTER_MODEL: "claude-sonnet-5",
+    EUROUTER_URL: "https://api.eurouter.ai/api/v1/chat/completions",
+
+    RATE_LIMIT_MAX: "40",
+    MAX_SESSIONS: "20000",
+
+    // Stabilní CSRF secret — bez něj by se tokeny po restartu kontejneru rozbily
+    CSRF_SECRET: "autoaws-chatbot-csrf-31d5"
+};

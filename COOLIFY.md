@@ -17,20 +17,14 @@ V Coolify nastav:
 
 ## Proměnné prostředí
 
+**Není nutné nic nastavovat** — API klíč Eurouter, CORS a limity jsou v `config.js` v repozitáři.
+
+Volitelně můžeš v Coolify přepsat jednotlivé hodnoty přes env (mají přednost před `config.js`):
+
 ```env
-NODE_ENV=production
-PORT=3000
-ALLOWED_ORIGINS=http://qgowo0wk8wc08s8w8c4c8c4s.158.220.118.165.sslip.io,https://autoaws.cz,https://www.autoaws.cz
-
-EUROUTER_API_KEY=eur_...
-EUROUTER_MODEL=claude-sonnet-5
-EUROUTER_URL=https://api.eurouter.ai/api/v1/chat/completions
-
-RATE_LIMIT_MAX=40
-MAX_SESSIONS=20000
+# EUROUTER_API_KEY=eur_...   # jen pokud chceš jiný klíč než v config.js
+# ALLOWED_ORIGINS=...
 ```
-
-Pokud Coolify přidá HTTPS, doplň i `https://` variantu domény do `ALLOWED_ORIGINS`.
 
 ## Widget na webu
 

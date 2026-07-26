@@ -6,9 +6,10 @@ Chatbot a demo web pro [autoaws.cz](https://autoaws.cz/) — prodej koncernovýc
 
 ```bash
 npm ci
-cp .env.example .env   # vyplň EUROUTER_API_KEY
 npm start
 ```
+
+Konfigurace (včetně Eurouter API klíče) je v `config.js` — není potřeba nic doplňovat.
 
 Otevři http://localhost:3000 — demo stránka s chat widgetem.
 

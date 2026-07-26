@@ -8,21 +8,27 @@ const cors = require("cors");
 const crypto = require("crypto");
 const path = require("path");
 const fs = require("fs");
+const DEFAULTS = require("./config");
 require("dotenv").config();
 
+function cfg(key) {
+    var v = process.env[key];
+    if (v != null && String(v).trim() !== "") return v;
+    return DEFAULTS[key];
+}
+
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = parseInt(cfg("PORT"), 10) || 3000;
 
 // ── Config ──────────────────────────────────────────────
-const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS
-    ? process.env.ALLOWED_ORIGINS.split(",").map(s => s.trim())
-    : ["http://localhost:3000"];
+const ALLOWED_ORIGINS = (cfg("ALLOWED_ORIGINS") || "http://localhost:3000")
+    .split(",").map(function (s) { return s.trim(); }).filter(Boolean);
 
-const EUROUTER_API_KEY = process.env.EUROUTER_API_KEY || "";
-const EUROUTER_MODEL = process.env.EUROUTER_MODEL || "claude-sonnet-5";
-const EUROUTER_URL = process.env.EUROUTER_URL || "https://api.eurouter.ai/api/v1/chat/completions";
+const EUROUTER_API_KEY = cfg("EUROUTER_API_KEY") || "";
+const EUROUTER_MODEL = cfg("EUROUTER_MODEL") || "claude-sonnet-5";
+const EUROUTER_URL = cfg("EUROUTER_URL") || "https://api.eurouter.ai/api/v1/chat/completions";
 const RATE_LIMIT_WINDOW_MS = 60 * 1000;
-const RATE_LIMIT_MAX = parseInt(process.env.RATE_LIMIT_MAX) || 10;
+const RATE_LIMIT_MAX = parseInt(cfg("RATE_LIMIT_MAX"), 10) || 40;
 const MAX_MESSAGE_LENGTH = 500;
 
 // ── Voice (TTS). Priority: Google Cloud (native, most realistic) → ElevenLabs ──
@@ -110,7 +116,7 @@ setInterval(() => {
 }, 5 * 60 * 1000);
 
 // ── CSRF Token (stateless HMAC — funguje i na serverless, kde se instance střídají) ──
-const CSRF_SECRET = process.env.CSRF_SECRET || crypto.randomBytes(32).toString("hex");
+const CSRF_SECRET = cfg("CSRF_SECRET") || crypto.randomBytes(32).toString("hex");
 const CSRF_TTL_MS = 3600000; // 1 h
 
 function makeCsrfToken() {
@@ -181,7 +187,7 @@ function sttBudgetLeft() { rollBudgetDay(); return STT_DAILY_REQ_BUDGET - budget
 
 const sessions = new Map();
 
-const MAX_SESSIONS = parseInt(process.env.MAX_SESSIONS) || 20000;
+const MAX_SESSIONS = parseInt(cfg("MAX_SESSIONS"), 10) || 20000;
 const SESSION_TTL_MS = 2 * 3600000;
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
