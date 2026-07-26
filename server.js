@@ -276,6 +276,16 @@ Když zákazník hledá vůz (rozpočet, typ, značka, „chci auto"):
 # OBCHODNÍ PODMÍNKY
 Když se zákazník ptá na obchodní podmínky: vysvětli, že konkrétní smlouva se řeší při koupi, a odkaž na relevantní sekce webu (financování, záruka, pojištění, kontakt) nebo na info@autoaws.cz. Nevymýšlej právní text.
 
+# ČASTÉ DOTAZY (FAQ)
+- Obchodní podmínky → odkaz na financování, záruku, pojištění, kontakt; nevymýšlej právní text.
+- Doprava a platba → ne e-shop; převzetí v showroomu; financování Moneta Auto.
+- Kontakt → +420 777 834 466, info@autoaws.cz, autoaws.cz/kontakt/
+- Reklamace → kontakt + záruka; postup podle kupní smlouvy.
+- GDPR → autoaws.cz/zpracovani-osobnich-udaju/
+- Návody/články → není blog; odkaz na automobily, financování, záruku.
+- O firmě → prodejce VW Group od 1998, Uherský Brod.
+- Akce/slevy → není veřejný seznam; u některých vozů záruka zdarma; slevy ověřit telefonicky.
+
 # KDY PŘEDAT NA ČLOVĚKA
 Individuální cena, sleva, skladová dostupnost konkrétního vozu, termín dodání, reklamace k posouzení, a cokoliv označené v KONTEXTU jako UNKNOWN.
 
@@ -572,6 +582,57 @@ function stripKbMeta(t) {
 // „Magnum" přebije cenový dotaz. Tyhle odpovědi jsou pevné.
 const INTENT_OVERRIDES = [
     {
+        test: /(obchodn[ií]\s+podm[ií]n|obchodne\s+podmien|terms\s+and\s+conditions|agb|podmínky\s+prodeje)/i,
+        answer: "Na webu autoaws.cz není samostatná veřejná stránka Obchodní podmínky — konkrétní smluvní podmínky (kupní smlouva, záruka, reklamace) se řeší individuálně při koupi s prodejcem.\n\n"
+              + "Obecné informace najdete zde:\n"
+              + "- [Financování](https://autoaws.cz/financovani/)\n"
+              + "- [Záruka Car Protect](https://autoaws.cz/zaruka/)\n"
+              + "- [Pojištění](https://autoaws.cz/pojisteni/)\n"
+              + "- [Kontakt](https://autoaws.cz/kontakt/)\n\n"
+              + "Přesné znění k vaší koupi: +420 777 834 466 nebo info@autoaws.cz."
+    },
+    {
+        test: /(jak\s+funguje\s+)?(doprav|doruč|doruc|platb|zaplat|převzet|prevzet|vyzvedn|hotovost)/i,
+        answer: "Auto AWS je prodejce vozů, ne e-shop — **zásilková doprava se neuplatňuje**. Vůz si převezmete v showroomu v Uherském Brodě (Cihlářská 422, Havřice), ideálně po domluvě termínu.\n\n"
+              + "**Platba:** financování na místě přes Moneta Auto (až 100 %, až 84 měsíců) — [Financování](https://autoaws.cz/financovani/). Další platební podmínky domluvíte s prodejcem při koupi.\n\n"
+              + "Kontakt: +420 777 834 466, info@autoaws.cz, [Kontakt](https://autoaws.cz/kontakt/)."
+    },
+    {
+        test: /(kde\s+(najdu|je)\s+kontakt|kontakt\s+na\s+auto\s*aws|jak\s+se\s+(s\s+v[aá]mi\s+)?spojit|telefon|e-?mail)/i,
+        answer: "**Kontakt Auto AWS:**\n"
+              + "- Telefon: **+420 777 834 466** (Vít Hauerland)\n"
+              + "- E-mail: **info@autoaws.cz**\n"
+              + "- Adresa: Cihlářská 422, Havřice, 688 01 Uherský Brod\n"
+              + "- Otevřeno: Po–Pá 9:00–17:00, So 9:00–11:00\n\n"
+              + "Více na [Kontakt](https://autoaws.cz/kontakt/)."
+    },
+    {
+        test: /(chci\s+podat\s+reklamac|pod[aá]m\s+reklamac|reklamovat|reklamace|st[ií]žnost|stiznost|vada\s+na\s+voze)/i,
+        answer: "Reklamace a práva z vadného plnění se řeší podle platné české legislativy a podmínek v kupní smlouvě. Konkrétní postup u vašeho vozu posoudí prodejce.\n\n"
+              + "Kontaktujte nás: **+420 777 834 466** nebo **info@autoaws.cz**. Informace o záruce: [Záruka Car Protect](https://autoaws.cz/zaruka/)."
+    },
+    {
+        test: /(gdpr|osobn[ií]\s+údaj[eě]?|osobni\s+udaj[e]?|zpracov[aá]n[ií]\s+údaj|ochran[aá]\s+údaj|soukrom[ií])/i,
+        answer: "Zásady zpracování osobních údajů najdete na webu Auto AWS v sekci Ochrana osobních údajů (autoaws.cz/zpracovani-osobnich-udaju).\n\n"
+              + "Správcem osobních údajů je provozovatel Auto AWS (Vít Hauerland), nikoli poskytovatel chatbota. Údaje slouží výhradně k vyřízení vašeho dotazu."
+    },
+    {
+        test: /(m[aá]te\s+(nějak[eé]\s+)?(návody|navody|návod|navod|čl[aá]nky|clanky|čl[aá]nek|clanek|blog)|návody|navody|návod|navod|čl[aá]nky|clanky|čl[aá]nek|clanek|tipy|rady)/i,
+        answer: "Na autoaws.cz není samostatný blog ani sekce Návody. Užitečné informace najdete v nabídce automobilů, financování, záruce a pojištění na webu autoaws.cz.\n\n"
+              + "K dotazu k konkrétnímu vozu volejte +420 777 834 466 nebo pište na info@autoaws.cz."
+    },
+    {
+        test: /(kdo\s+jste|o\s+firm[eě]|o\s+auto\s*aws|co\s+je\s+auto\s*aws|kdo\s+provozuje)/i,
+        answer: "**Auto AWS** je prodejce koncernových automobilů v Uherském Brodě od roku 1998. Specializujeme se na prodej a dovoz vozů značek Audi, Volkswagen, Škoda, Seat a Cupra z Německa — ověřené autorizovaným servisem. V roce 2025 byl otevřen nový showroom.\n\n"
+              + "Provozovatel: Vít Hauerland (IČO 69670811). Více: [autoaws.cz](https://autoaws.cz/) nebo [Kontakt](https://autoaws.cz/kontakt/)."
+    },
+    {
+        test: /(akc[eě]|slev|výprodej|vyprodej|promo|kupon|levn[eě]ji|m[aá]te\s+slev)/i,
+        answer: "Na webu autoaws.cz není veřejný seznam aktuálních akcí nebo slevových kódů.\n\n"
+              + "U některých vozů je v nabídce **záruka zdarma** (program ADVANTAGE) — viz [Záruka](https://autoaws.cz/zaruka/). Konkrétní ceny jsou u každého vozu na [Nabídka automobilů](https://autoaws.cz/automobily/).\n\n"
+              + "Individuální slevy ověřte u prodejce: +420 777 834 466 nebo info@autoaws.cz."
+    },
+    {
         test: /(kolik\s+(to\s+)?stoj|za\s+kolik|jak[aá]\s+je\s+cena|cena\s+(auta|vozu|automobilu)|cen[ií]k|price|how\s+much|preis)/i,
         answer: "Ceny konkrétních vozů jsou uvedeny u každého inzerátu na https://autoaws.cz/automobily/ — včetně ceny s DPH i bez DPH. "
               + "Pro aktuální cenu konkrétního vozu se podívejte do nabídky nebo zavolejte na +420 777 834 466 / info@autoaws.cz."
@@ -583,11 +644,17 @@ const INTENT_OVERRIDES = [
     }
 ];
 
-function answerFromKB(message) {
-    if (!KB_SECTIONS.length) return null;
+function matchIntentOverride(message) {
     for (var oi = 0; oi < INTENT_OVERRIDES.length; oi++) {
         if (INTENT_OVERRIDES[oi].test.test(message || "")) return INTENT_OVERRIDES[oi].answer;
     }
+    return null;
+}
+
+function answerFromKB(message) {
+    if (!KB_SECTIONS.length) return matchIntentOverride(message);
+    var intent = matchIntentOverride(message);
+    if (intent) return intent;
     var ranked = rankSections(message).filter(function (r) {
         return !isInternalSection(r.sec.heading);
     });
@@ -606,7 +673,7 @@ function answerFromKB(message) {
     if (body.length > 750) body = body.slice(0, 750).replace(/\s+\S*$/, "") + " …";
 
     // V degradovaném režimu (bez AI) připojíme kontakt, ať zákazník neskončí ve slepé uličce.
-    if (!/315 686 6/.test(body)) {
+    if (!/777 834 466/.test(body)) {
         body += "\n\nKdyby něco nebylo jasné, ozvěte se na +420 777 834 466 nebo info@autoaws.cz.";
     }
     return body;
@@ -633,14 +700,20 @@ function selectKB(message, maxChars) {
 // ── Local knowledge base (fallback when no AI key) ──────
 const LOCAL_KB = {
     cs: {
-        greeting: "Dobrý den! Rád pomůžu – poradím s výběrem auta, financováním, zárukou, pojištěním nebo kontaktem. S čím můžu posloužit?",
-        shipping: "Aktuální nabídku automobilů najdete na https://autoaws.cz/automobily/ — Audi, VW, Škoda, Seat a další značky dovezené z Německa. Vozy jsou ověřeny autorizovaným servisem.",
-        payment: "Financování nabízíme přes Moneta Auto – až 100 % ceny vozu, splácení až 84 měsíců. Vyřízení na místě, potřebujete občanku a výpis z účtu. Více na https://autoaws.cz/financovani/",
-        returns: "Nabízíme prodlouženou záruku Auto AWS Car Protect (DEFEND INSURANCE) – programy DELUXE, E-DELUXE a ADVANTAGE, až na 3 roky. U některých vozů je záruka zdarma. Více na https://autoaws.cz/zaruka/",
-        contact: "Zavolejte na +420 777 834 466 nebo napište na info@autoaws.cz. Provozovna: Cihlářská 422, Havřice, 688 01 Uherský Brod. Otevřeno Po–Pá 9–17, So 9–11.",
-        terms: "Vaše údaje zpracovává provozovatel Auto AWS (Vít Hauerland) jako správce osobních údajů (nikoli poskytovatel chatbota), pouze pro vyřízení vašeho dotazu. Zásady ochrany údajů: https://autoaws.cz/zpracovani-osobnich-udaju/",
+        greeting: "Dobrý den! Rád pomůžu – poradím s výběrem auta, financováním, zárukou, pojištěním, dopravou, platbou nebo kontaktem. S čím můžu posloužit?",
+        shipping: "Auto AWS je prodejce vozů — zásilková doprava se neuplatňuje. Vůz si převezmete v showroomu v Uherském Brodě (Cihlářská 422), ideálně po domluvě termínu na +420 777 834 466. Více: https://autoaws.cz/kontakt/",
+        payment: "Financování nabízíme přes Moneta Auto – až 100 % ceny vozu, splácení až 84 měsíců, vyřízení na místě (občanka + výpis z účtu). Další platební podmínky domluvíte při koupi. Více: https://autoaws.cz/financovani/",
+        returns: "Reklamace a práva z vadného plnění se řeší podle zákona a kupní smlouvy. Kontaktujte prodejce na +420 777 834 466 nebo info@autoaws.cz. Informace o záruce: https://autoaws.cz/zaruka/",
+        contact: "Zavolejte na +420 777 834 466 nebo napište na info@autoaws.cz. Provozovna: Cihlářská 422, Havřice, 688 01 Uherský Brod. Otevřeno Po–Pá 9–17, So 9–11. Více: https://autoaws.cz/kontakt/",
+        terms: "Na webu není samostatná stránka Obchodní podmínky — smluvní podmínky se řeší při koupi. Obecné info: https://autoaws.cz/financovani/, https://autoaws.cz/zaruka/, https://autoaws.cz/kontakt/. Dotazy: +420 777 834 466.",
+        gdpr: "Zásady zpracování osobních údajů: https://autoaws.cz/zpracovani-osobnich-udaju/. Správcem je provozovatel Auto AWS (Vít Hauerland), nikoli poskytovatel chatbota.",
+        about: "Auto AWS prodává a dováží koncernové automobily (Audi, VW, Škoda, Seat, Cupra) z Německa od roku 1998. Showroom: Cihlářská 422, Uherský Brod. Více: https://autoaws.cz/kontakt/",
+        articles: "Na webu není blog ani sekce Návody. Užitečné info: https://autoaws.cz/automobily/, https://autoaws.cz/financovani/, https://autoaws.cz/zaruka/. Dotazy: +420 777 834 466.",
+        promo: "Veřejný seznam akcí na webu není. U některých vozů je záruka zdarma — https://autoaws.cz/zaruka/. Individuální slevy ověřte na +420 777 834 466.",
+        warranty: "Prodloužená záruka Auto AWS Car Protect (DEFEND INSURANCE) — DELUXE, E-DELUXE, ADVANTAGE, až 3 roky. U některých vozů záruka zdarma. Více: https://autoaws.cz/zaruka/",
+        cars: "Aktuální nabídka automobilů: https://autoaws.cz/automobily/ — Audi, VW, Škoda, Seat, Cupra dovezené z Německa, ověřené servisem.",
         thanks: "Není zač, rád jsem pomohl! Kdybyste potřebovali cokoli dalšího, jsem tu. 🙂",
-        fallback: "Tím si nejsem úplně jistý, ale rád pomůžu s výběrem auta, financováním, zárukou nebo kontaktem. Můžete se také obrátit na info@autoaws.cz."
+        fallback: "Tím si nejsem úplně jistý, ale rád pomůžu s výběrem auta, financováním, zárukou, dopravou nebo kontaktem. Můžete se také obrátit na info@autoaws.cz."
     },
     sk: {
         greeting: "Dobrý deň! Rád pomôžem – poradím s dopravou, platbou, vrátením tovaru, reklamáciou alebo kontaktom. S čím môžem poslúžiť?",
@@ -727,11 +800,17 @@ const LOCAL_KB = {
 const KB_KEYWORDS = {
     greeting: ["ahoj", "dobrý den", "dobry den", "dobrý deň", "zdravím", "zdravim", "čau", "cau", "hello", "hi ", "hallo", "guten tag", "servus", "bonjour", "salut", "hola", "buongiorno", "ciao", "dzień dobry", "dzien dobry", "cześć", "czesc", "доброго дня", "привіт"],
     thanks:   ["děkuj", "dekuj", "díky", "diky", "ďakuj", "thank", "thx", "danke", "merci", "gracias", "grazie", "dziękuj", "dziekuj", "дякую"],
-    shipping: ["automobil", "auto", "vuz", "vozidlo", "nabidk", "nabídk", "skoda", "audi", "volkswagen", "seat", "cupra", "dovoz", "nemecko", "invent", "katalog"],
-    payment:  ["financ", "uver", "úvěr", "splatk", "splátk", "leasing", "moneta", "pujck", "půjč", "pay", "payment"],
-    returns:  ["zaruk", "záruk", "car protect", "defend", "deluxe", "advantage", "pojist", "havarijn", "povinn", "garan", "warrant", "insur"],
+    shipping: ["doprav", "doruč", "doruc", "doruceni", "doručení", "převzet", "prevzet", "vyzvedn", "převzít", "prevzit", "showroom"],
+    payment:  ["financ", "uver", "úvěr", "splatk", "splátk", "leasing", "moneta", "pujck", "půjč", "pay", "payment", "platb", "zaplat", "hotovost", "převod", "prevod"],
+    returns:  ["reklamac", "reklam", "stížnost", "stiznost", "vada", "závada", "zavada"],
     contact:  ["kontakt", "telefon", "e-mail", "email", "spoji", "volat", "mail", "phone", "erreich", "support", "podpor", "télépho", "courriel", "contacto", "teléfono", "correo", "contatt", "telefono", "контакт", "пошт", "звʼяз", "зв'яз", "звяз"],
-    terms:    ["podmín", "podmie", "gdpr", "osobní údaj", "osobni udaj", "ochran", "soukrom", "terms", "condition", "privacy", "beding", "daten", "obchodní podmín", "obchodne podmien", "confidential", "données", "condicion", "privacid", "datos", "condizion", "privacy", "dati", "regulamin", "prywatn", "dane", "умов", "конфіденц", "дані"]
+    terms:    ["podmín", "podmie", "obchodní podmín", "obchodne podmien", "terms", "condition", "smlouv", "smluv"],
+    gdpr:     ["gdpr", "osobní údaj", "osobni udaj", "ochran", "soukrom", "privacy", "zpracování údaj", "zpracovani udaj"],
+    about:    ["kdo jste", "o firm", "auto aws", "co prodáváte", "co prodavate", "provozovatel", "hauerland", "showroom"],
+    articles: ["návod", "navod", "článek", "clanek", "blog", "tipy", "rady", "informace"],
+    promo:    ["akce", "sleva", "slevy", "výprodej", "vyprodej", "promo", "kupon", "levněji", "levneji"],
+    warranty: ["zaruk", "záruk", "car protect", "defend", "deluxe", "advantage", "pojist", "havarijn", "povinn", "garan", "warrant", "insur"],
+    cars:     ["automobil", "auto", "vuz", "vozidlo", "nabidk", "nabídk", "skoda", "audi", "volkswagen", "seat", "cupra", "dovoz", "nemecko", "německo", "invent", "katalog"]
 };
 
 function matchCount(low, words) {
@@ -746,7 +825,7 @@ function answerLocally(message, lang) {
     const low = (message || "").toLowerCase().trim();
     if (!low) return kb.fallback;
 
-    const topics = ["shipping", "payment", "returns", "contact", "terms"];
+    const topics = ["shipping", "payment", "returns", "contact", "terms", "gdpr", "about", "articles", "promo", "warranty", "cars"];
     let best = null, bestScore = 0;
     for (const key of topics) {
         const s = matchCount(low, KB_KEYWORDS[key]);
@@ -913,8 +992,14 @@ app.post("/chat", rateLimit, validateCsrf, async (req, res) => {
         // 2) Strop souběžnosti: když je LLM zahlcené, odpovíme rovnou z báze.
         //    Přesná odpověď za 5 ms je lepší než správná za 36 s.
         if (!botReply && HAS_LLM && llmInflight >= LLM_MAX_INFLIGHT) {
-            const quick = answerFromKB(message);
+            const quick = matchIntentOverride(message) || answerFromKB(message);
             if (quick) { botReply = quick; servedFrom = "kb_overload"; STATS.kbOverload++; }
+        }
+
+        // 2.5) Kritické FAQ — deterministická odpověď bez LLM (obchodní podmínky, GDPR, reklamace…)
+        if (!botReply) {
+            const intentAns = matchIntentOverride(message);
+            if (intentAns) { botReply = intentAns; servedFrom = "intent_override"; }
         }
 
         // Real AI when a key is configured (Gemini → Groq → OpenRouter).

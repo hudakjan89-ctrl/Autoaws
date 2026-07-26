@@ -277,13 +277,62 @@ Správce: Vít Hauerland / Auto AWS.
 TYP ZNALOSTI: fakt
 KLÍČOVÁ SLOVA: gdpr, osobní údaje, ochrana údajů, soukromí
 
+## 8.4 Doprava a platba
+
+Auto AWS je **autobazar / prodejce vozů**, ne e-shop se zásilkovou službou. **Doprava zboží poštou se neuplatňuje.**
+
+**Převzetí vozu:**
+- Osobní převzetí v **showroomu** v Uherském Brodě (Cihlářská 422, Havřice) — doporučujeme předem zavolat a domluvit termín.
+- Vozy jsou **dováženy z Německa**; konkrétní možnosti předání konkrétního vozu domluvíte s prodejcem.
+
+**Platba:**
+- **Financování na místě** přes Moneta Auto (až 100 % ceny, až 84 měsíců) — více na https://autoaws.cz/financovani/
+- Další platební podmínky (hotovost, převod) se řeší **individuálně při koupi** s prodejcem.
+
+Kontakt: **+420 777 834 466**, **info@autoaws.cz**, https://autoaws.cz/kontakt/
+
+TYP ZNALOSTI: fakt
+KLÍČOVÁ SLOVA: doprava, platba, doručení, doruceni, převzetí, prevzeti, vyzvednutí, vyzvednuti, zaplatit, hotovost, převod, prevod, jak zaplatit, jak převzít
+
 ---
 
-# 9. DOPORUČENÉ VOZY Z AKTUÁLNÍ NABÍDKY
+# 9. NÁVODY, ČLÁNKY A UŽITEČNÉ INFORMACE
+
+Na webu **autoaws.cz** není samostatný blog ani sekce „Návody". Užitečné informace najdete v těchto sekcích:
+
+- **Nabídka automobilů** (filtry, specifikace, VIN): https://autoaws.cz/automobily/
+- **Financování**: https://autoaws.cz/financovani/
+- **Záruka Car Protect**: https://autoaws.cz/zaruka/
+- **Pojištění**: https://autoaws.cz/pojisteni/
+- **Kontakt a showroom**: https://autoaws.cz/kontakt/
+
+Pro konkrétní dotaz k vozu volejte **+420 777 834 466** nebo pište na **info@autoaws.cz**.
+
+TYP ZNALOSTI: fakt
+KLÍČOVÁ SLOVA: návod, navod, článek, clanek, blog, tipy, rady, jak na to, informace, průvodce, pruvodce
+
+---
+
+# 10. AKCE, SLEVY A VÝHODY
+
+Na webu **autoaws.cz** není veřejně uvedený seznam aktuálních akcí nebo slevových kódů.
+
+**Co je ověřené:**
+- U **některých vozů** je v nabídce **záruka zdarma** (program ADVANTAGE na 1 rok) — viz https://autoaws.cz/zaruka/
+- Konkrétní cena je uvedena u každého inzerátu na https://autoaws.cz/automobily/
+
+**Individuální slevy a výjimky z ceny** nejsou na webu uvedeny — ověřte telefonicky **+420 777 834 466** nebo e-mailem **info@autoaws.cz**. Nevymýšlejte konkrétní procenta slev.
+
+TYP ZNALOSTI: fakt
+KLÍČOVÁ SLOVA: akce, sleva, slevy, výprodej, vyprodej, promo, kupon, zdarma, levněji, levneji, máte slevu, mate zlavu, akční cena
+
+---
+
+# 11. DOPORUČENÉ VOZY Z AKTUÁLNÍ NABÍDKY
 
 Tyto vozy jsou ověřené z nabídky autoaws.cz. Ceny jsou s DPH k datu vložení do báze — vždy ověřte aktuální stav na odkazu.
 
-## 9.1 Volkswagen e-up! 61kW Style — 379 000 Kč
+## 11.1 Volkswagen e-up! 61kW Style — 379 000 Kč
 
 - URL: https://autoaws.cz/automobily/Volkswagen-e-up!-61kW-Style-LED-Kamera-APP-969009
 - Palivo: elektro
@@ -291,7 +340,7 @@ Tyto vozy jsou ověřené z nabídky autoaws.cz. Ceny jsou s DPH k datu vložen�
 
 KLÍČOVÁ SLOVA: e-up, levné auto, do 400 tisíc, elektromobil město, malé auto
 
-## 9.2 Volkswagen Passat 2,0 TDi DSG Business — 447 000 Kč
+## 11.2 Volkswagen Passat 2,0 TDi DSG Business — 447 000 Kč
 
 - URL: https://autoaws.cz/automobily/Volkswagen-Passat-2,0-TDi-DSG-Business-IQ-Light-Kamera-969545
 - Palivo: diesel
@@ -299,7 +348,7 @@ KLÍČOVÁ SLOVA: e-up, levné auto, do 400 tisíc, elektromobil město, malé a
 
 KLÍČOVÁ SLOVA: passat, diesel, do 500 tisíc, kombi, sedan, dsg
 
-## 9.3 Cupra Born 150kW — 569 000 Kč
+## 11.3 Cupra Born 150kW — 569 000 Kč
 
 - URL: https://autoaws.cz/automobily/Cupra-Born-150kW-LED-Tepelko-Kamera-968739
 - Palivo: elektro
@@ -307,7 +356,7 @@ KLÍČOVÁ SLOVA: passat, diesel, do 500 tisíc, kombi, sedan, dsg
 
 KLÍČOVÁ SLOVA: cupra born, elektromobil, sport
 
-## 9.4 Seat Ateca 1,5 TSi FR Line — 614 000 Kč
+## 11.4 Seat Ateca 1,5 TSi FR Line — 614 000 Kč
 
 - URL: https://autoaws.cz/automobily/Seat-Ateca-1,5-TSi-DSG-FR-Line-Virtual-LED-ACC-882279
 - Palivo: benzín
@@ -315,7 +364,7 @@ KLÍČOVÁ SLOVA: cupra born, elektromobil, sport
 
 KLÍČOVÁ SLOVA: ateca, suv, benzín, rodina
 
-## 9.5 Jak doporučovat vůz (pro asistenta)
+## 11.5 Jak doporučovat vůz (pro asistenta)
 
 Když zákazník hledá auto (např. „hledám auto do 500 tisíc"):
 1. Zeptej se na chybějící preference: palivo, typ karoserie, značka, ročník.

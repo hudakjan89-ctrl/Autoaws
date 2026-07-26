@@ -52,6 +52,34 @@ const CASES = [
     { id: "skladem", lang: "cs", q: "máte skladem Škodu Octavii?",
       must: [["nemám", "neuvád", "nabídk", "autoaws.cz", "777 834 466", "ověř"]],
       forbid: ["ano, máme skladem"] },
+
+    { id: "doprava-platba", lang: "cs", q: "Jak funguje doprava a platba?",
+      must: [["doprav", "převzet", "prevzet", "showroom", "zásilk"], ["platb", "financov", "moneta", "hotovost"]],
+      forbid: ["1 200", "libiš", "libis", "150 kč"] },
+
+    { id: "kontakt-faq", lang: "cs", q: "Kde najdu kontakt na autoaws?",
+      must: [["777 834 466"], ["info@autoaws.cz", "kontakt"]],
+      forbid: [] },
+
+    { id: "reklamace", lang: "cs", q: "Chci podat reklamaci.",
+      must: [["reklamac"], ["777 834 466", "info@autoaws.cz"]],
+      forbid: ["14 dnů bez důvodu"] },
+
+    { id: "gdpr", lang: "cs", q: "osobní údaje / GDPR?",
+      must: [["osobní údaj", "osobni udaj", "ochrana"], ["hauerland", "auto aws", "správce", "spravce"]],
+      forbid: [] },
+
+    { id: "navody", lang: "cs", q: "Máte nějaké návody nebo články?",
+      must: [["návod", "navod", "článek", "clanek", "blog", "není", "neni"], ["automobily", "financov", "zaruk", "záruk", "777 834 466"]],
+      forbid: [] },
+
+    { id: "o-firme", lang: "cs", q: "Kdo jste / o firmě autoaws?",
+      must: [["1998", "uhersk"], ["audi", "volkswagen", "škoda", "skoda", "seat", "německ", "nemeck"]],
+      forbid: [] },
+
+    { id: "akce-slevy", lang: "cs", q: "Hledám nějaké akce, máte slevy?",
+      must: [["sleva", "slevy", "akc", "není", "neuvád", "neuvad", "ověř", "over"], ["777 834 466", "záruka zdarma", "zaruka zdarma", "automobily"]],
+      forbid: ["20 %", "30 %", "50 %"] },
 ];
 
 async function getCsrf() {

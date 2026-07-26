@@ -18,7 +18,11 @@
         contact:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>',
         shipping: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>',
         returns:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>',
-        terms:    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>',
+        terms:    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>',
+        gdpr:     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
+        about:    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
+        articles: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+        promo:    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>',
         food:     '<svg viewBox="0 0 24 24" fill="currentColor"><ellipse cx="7" cy="7.5" rx="2.1" ry="2.7"/><ellipse cx="12" cy="5.6" rx="2.1" ry="2.8"/><ellipse cx="17" cy="7.5" rx="2.1" ry="2.7"/><ellipse cx="19.6" cy="12.4" rx="2" ry="2.4"/><path d="M12 11.4c2.4 0 4.6 1.7 5.5 3.9.9 2.2-.2 4.4-2.4 4.9-1 .2-2-.1-3.1-.1s-2.1.3-3.1.1c-2.2-.5-3.3-2.7-2.4-4.9.9-2.2 3.1-3.9 5.5-3.9z"/></svg>',
         treats:   '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.6 7.6l8.8 8.8" stroke="currentColor" stroke-width="4.6" stroke-linecap="round" fill="none"/><circle cx="8.9" cy="6.1" r="2.9"/><circle cx="6.1" cy="8.9" r="2.9"/><circle cx="17.9" cy="15.1" r="2.9"/><circle cx="15.1" cy="17.9" r="2.9"/></svg>'
     };
@@ -80,15 +84,28 @@
     let inviteTimer    = null;
     let inviteAutoTimer = null;
 
-    // ── Texts – TENESCO ─────────────────────────────────
+    // ── Texts – Auto AWS ─────────────────────────────────
     const UI_TEXT = {
         cs: {
-            food: "V nabídce máme především značky <strong>Audi, Volkswagen, Škoda, Seat a Cupra</strong> — mladší a kvalitnější vozy dovezené z Německa. Aktuální nabídku najdete na <strong>autoaws.cz/automobily</strong>. Napište mi, jaký typ auta hledáte.",
-            treats: "Nabízíme <strong>financování přes Moneta Auto</strong> — až 100 % ceny vozu, splácení až 84 měsíců. Vyřízení na místě, potřebujete občanku a výpis z účtu. Více na autoaws.cz/financovani.",
-            contact: "Zavolejte na <strong>+420 777 834 466</strong> nebo napište na <strong>info@autoaws.cz</strong>. Provozovna Po–Pá 9:00–17:00, So 9:00–11:00. Adresa: Cihlářská 422, Havřice, 688 01 Uherský Brod.",
-            shipping: "Aktuální nabídku automobilů najdete na <strong>autoaws.cz/automobily</strong>. Vozy jsou dovezené z Německa a ověřené autorizovaným servisem. Na vyžádání certifikát Cebia.",
-            returns: "Nabízíme prodlouženou záruku <strong>Auto AWS Car Protect</strong> (DEFEND INSURANCE) — programy DELUXE, E-DELUXE a ADVANTAGE, až na 3 roky. U některých vozů je záruka zdarma. Více na autoaws.cz/zaruka.",
-            terms: "Zásady zpracování osobních údajů najdete na autoaws.cz/zpracovani-osobnich-udaju. Vaše údaje zpracovává provozovatel Auto AWS pouze pro vyřízení dotazu."
+            welcome: "Dobrý den! Jsem asistent Auto AWS. Rád poradím s výběrem auta, financováním, dopravou, platbou, reklamací, GDPR nebo kontaktem.",
+            welcomeHtml: "Dobrý den! Jsem asistent <strong>Auto AWS</strong>. Rád poradím s výběrem auta, financováním, dopravou, platbou, reklamací, GDPR nebo kontaktem. Zeptejte se, nebo zvolte rychlou akci níže.",
+            placeholder: "Napište zprávu…",
+            expandLabel: "Rozšířit chat",
+            themeLabel: "Tmavý režim",
+            error: "Omlouvám se, něco se pokazilo. Zkuste to prosím znovu, nebo napište na info@autoaws.cz.",
+            showOnPage: "Chcete přejít na stránku Auto AWS?",
+            btnYes: "Ano, přejít",
+            redirecting: "Přesměrovávám…",
+            terms: "Na webu autoaws.cz není samostatná stránka <strong>Obchodní podmínky</strong> — konkrétní smlouva se řeší při koupi. Obecné info: <strong>autoaws.cz/financovani</strong>, <strong>autoaws.cz/zaruka</strong>, <strong>autoaws.cz/kontakt</strong>. Dotazy: <strong>+420 777 834 466</strong>.",
+            shipping: "Auto AWS je prodejce vozů — <strong>zásilková doprava se neuplatňuje</strong>. Vůz si převezmete v showroomu v Uherském Brodě (Cihlářská 422), ideálně po domluvě na <strong>+420 777 834 466</strong>. Financování na místě: <strong>autoaws.cz/financovani</strong>.",
+            contact: "Zavolejte na <strong>+420 777 834 466</strong> nebo napište na <strong>info@autoaws.cz</strong>. Provozovna Po–Pá 9:00–17:00, So 9:00–11:00. Adresa: Cihlářská 422, Havřice, 688 01 Uherský Brod. Více: <strong>autoaws.cz/kontakt</strong>.",
+            returns: "Reklamace se řeší podle zákona a kupní smlouvy. Kontaktujte prodejce na <strong>+420 777 834 466</strong> nebo <strong>info@autoaws.cz</strong>. Info o záruce: <strong>autoaws.cz/zaruka</strong>.",
+            gdpr: "Zásady zpracování osobních údajů: <strong>autoaws.cz/zpracovani-osobnich-udaju</strong>. Správcem je provozovatel Auto AWS (Vít Hauerland), nikoli poskytovatel chatbota.",
+            articles: "Na webu není blog ani sekce Návody. Užitečné informace: <strong>autoaws.cz/automobily</strong>, <strong>autoaws.cz/financovani</strong>, <strong>autoaws.cz/zaruka</strong>. K dotazu k vozu: <strong>+420 777 834 466</strong>.",
+            about: "<strong>Auto AWS</strong> prodává a dováží koncernové automobily (Audi, VW, Škoda, Seat, Cupra) z Německa od roku 1998. Showroom v Uherském Brodě. Více: <strong>autoaws.cz/kontakt</strong>.",
+            promo: "Veřejný seznam akcí na webu není. U některých vozů je <strong>záruka zdarma</strong> — autoaws.cz/zaruka. Individuální slevy ověřte na <strong>+420 777 834 466</strong>.",
+            food: "V nabídce máme především značky <strong>Audi, Volkswagen, Škoda, Seat a Cupra</strong> — mladší vozy dovezené z Německa. Nabídka: <strong>autoaws.cz/automobily</strong>.",
+            treats: "Nabízíme <strong>financování přes Moneta Auto</strong> — až 100 % ceny vozu, splácení až 84 měsíců. Více: <strong>autoaws.cz/financovani</strong>."
         },
         sk: {
             food: "Krmivá vedieme pre psov, mačky, hlodavce, vtáctvo aj akva-teru – granule, konzervy, kapsičky aj varené krmivo. Značky <strong>Magnum Dog Food</strong>, <strong>Alpha Spirit</strong>, <strong>Profine</strong>, <strong>Brit</strong>. Napíšte mi, pre aké zviera vyberáte.",
@@ -156,12 +173,30 @@
         }
     };
 
+    // Doplnění chybějících polí u ostatních jazyků (fallback na češtinu)
+    (function fillUiDefaults() {
+        var keys = ["welcome", "welcomeHtml", "placeholder", "expandLabel", "themeLabel", "error", "showOnPage", "btnYes", "redirecting",
+            "terms", "shipping", "contact", "returns", "gdpr", "articles", "about", "promo", "food", "treats"];
+        ["sk", "en", "de", "fr", "es", "it", "pl", "uk"].forEach(function (lang) {
+            if (!UI_TEXT[lang]) UI_TEXT[lang] = {};
+            keys.forEach(function (k) {
+                if (!UI_TEXT[lang][k] && UI_TEXT.cs[k]) UI_TEXT[lang][k] = UI_TEXT.cs[k];
+            });
+        });
+    })();
+
+    const INSTANT_ANSWERS = UI_TEXT;
+
     const QUICK_ACTIONS_TEXT = {
         cs: [
-            { key: "food",     label: "Nabídka aut" },
-            { key: "treats",   label: "Financování" },
-            { key: "shipping", label: "Ověření vozů" },
-            { key: "contact",  label: "Kontakt" }
+            { key: "terms",    label: "Obchodní podmínky" },
+            { key: "shipping", label: "Doprava a platba" },
+            { key: "contact",  label: "Kontakt" },
+            { key: "returns",  label: "Reklamace" },
+            { key: "gdpr",     label: "GDPR" },
+            { key: "articles", label: "Návody / články" },
+            { key: "about",    label: "O firmě" },
+            { key: "promo",    label: "Akce / slevy" }
         ],
         sk: [
             { key: "food",     label: "Nabídka aut" },
@@ -218,8 +253,8 @@
         cs: {
             disclaimer: "Asistent může dělat chyby. Důležité informace si ověřte.",
             consentLink: "Zpracování osobních údajů",
-            consentFull: "Vaše zprávy zpracovává provozovatel velkoobchodu TENESCO jako správce osobních údajů – nikoli poskytovatel chatbota. Údaje slouží výhradně k vyřízení vašeho dotazu a neukládají se déle, než je nutné. Více v Zásadách ochrany osobních údajů na webu TENESCO.",
-            consentBannerHtml: "Vaše zprávy zpracovává <strong>velkoobchod TENESCO</strong> (správce údajů), ne poskytovatel chatbota. Používáním souhlasíte.",
+            consentFull: "Vaše zprávy zpracovává provozovatel Auto AWS (Vít Hauerland) jako správce osobních údajů – nikoli poskytovatel chatbota. Údaje slouží výhradně k vyřízení vašeho dotazu a neukládají se déle, než je nutné. Více na autoaws.cz/zpracovani-osobnich-udaju.",
+            consentBannerHtml: "Vaše zprávy zpracovává <strong>Auto AWS</strong> (správce údajů), ne poskytovatel chatbota. Používáním souhlasíte.",
             consentOk: "Rozumím",
             listening: "Poslouchám…",
             animLabel: "Animace a efekty",
@@ -357,7 +392,10 @@
         shipping: ["doprav","doruč","doruc","zásil","zasil","pošt","post","versand","ship","deliver","balík","balik","packet","livr","relais","env","entrega","reparto","spediz","conseg","dostaw","wysył","przesył","достав","відправ"],
         contact:  ["kontakt","telefon","email","e-mail","spoji","volat","mail","phone","contact","erreich","télépho","courriel","contacto","teléfono","correo","contatt","telefono","контакт","телефон","пошт","звʼяз","зв'яз","звяз"],
         returns:  ["reklamac","reklam","vrác","vrat","vrát","return","claim","rückgab","ruckgab","refund","retour","réclam","rembours","devoluc","reso","zwrot","gwaranc","záruk","zaruk","garan","поверн","рекламац","гаранті"],
-        terms:    ["podmín","podmie","gdpr","údaj","udaj","ochran","terms","condition","privacy","beding","daten","obchodní","obchodne","confidential","données","condicion","privacid","datos","condizion","dati","regulamin","prywatn","dane","умов","конфіденц","дані"]
+        terms:    ["podmín","podmie","gdpr","údaj","udaj","ochran","terms","condition","privacy","beding","daten","obchodní","obchodne","confidential","données","condicion","privacid","datos","condizion","dati","regulamin","prywatn","dane","умов","конфіденц","дані"],
+        about:    ["kdo jste","o firm","auto aws","provozovatel"],
+        articles: ["návod","navod","článek","clanek","blog","tipy"],
+        promo:    ["akce","sleva","slevy","výprodej","vyprodej","promo","kupon"]
     };
 
     const MIC_TEXT = {
@@ -374,7 +412,7 @@
 
     // ── Invite popup texts ───────────────────────────────────
     const INVITE_TEXT = {
-        cs: { greeting: "Dobrý den! 👋 Potřebujete poradit s objednávkou, dopravou, reklamací nebo výběrem produktu? Rád pomůžu.", cta: "Začít konverzaci", online: "Online" },
+        cs: { greeting: "Dobrý den! 👋 Potřebujete poradit s výběrem auta, financováním, dopravou, reklamací nebo kontaktem? Rád pomůžu.", cta: "Začít konverzaci", online: "Online" },
         sk: { greeting: "Dobrý deň! 👋 Potrebujete poradiť s objednávkou, dopravou, reklamáciou alebo výberom produktu? Rád pomôžem.", cta: "Začať konverzáciu", online: "Online" },
         en: { greeting: "Hello! 👋 Need help with an order, shipping, a return or choosing a product? I'm happy to help.", cta: "Start a conversation", online: "Online" },
         de: { greeting: "Guten Tag! 👋 Brauchen Sie Hilfe bei Bestellung, Versand, Rückgabe oder Produktauswahl? Ich helfe gerne.", cta: "Konversation starten", online: "Online" },
@@ -1777,14 +1815,15 @@
         } else if (target.closest(".quick-action-btn")) {
             var qaBtn = target.closest(".quick-action-btn");
             var action = qaBtn.dataset.action;
-            var answer = INSTANT_ANSWERS[selectedLang][action];
-            if (answer) {
+            var answers = INSTANT_ANSWERS[selectedLang] || INSTANT_ANSWERS.cs;
+            var actionAns = answers[action] || INSTANT_ANSWERS.cs[action];
+            if (actionAns) {
                 var labelEl = qaBtn.querySelector(".qa-label");
                 addMessage(labelEl ? labelEl.textContent : qaBtn.textContent.trim(), "user", false, true);
                 showSearching();
                 setTimeout(function () {
                     removeSearching();
-                    addMessage(answer, "bot", true, true, true);
+                    addMessage(actionAns, "bot", true, true, true);
                 }, 650);
             }
         } else if (target.closest("#settingsBtn")) {
