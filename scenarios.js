@@ -40,7 +40,7 @@ function parseBudgetCzk(text) {
     return null;
 }
 
-const CAR_START = /(hled[aá]m\s+auto|chci\s+(auto|v[uů]z|automobil)|potrebuj(em|u)\s+auto|potřebuj[ií]\s+auto|vyber(em|u|te)?\s+auto|vyb[eě]r\s+auta|dopor[uč][tí]\s+(auto|v[uů]z)|co\s+dopor[uč][í]te|nakup\s+auta|koupit\s+auto|hľadám\s+auto)/i;
+const CAR_START = /(hled[aá]m\s+auto|chci\s+(auto|v[uů]z|automobil)|potrebuj(em|u)\s+auto|potřebuj[ií]\s+(auto|vybrat)|vyber(em|u|te)?\s+auto|vyb[eě]r\s+auta|vybrat\s+auto|dopor[uč][tí]\s+(auto|v[uů]z)|co\s+dopor[uč][í]te|nakup\s+auta|koupit\s+auto|hľadám\s+auto)/i;
 const FIN_START = /(chci\s+financov|zaj[ií]m[aá].*financov|financovat\s+(auto|v[uů]z)|na\s+spl[aá]tk|uver|úv[eě]r|uv[eě]r|moneta|kolik\s+(by\s+)?(m[eě]s[ií][cč]n[eě]|spl[aá]tk)|d[aá]\s+se\s+(to\s+)?financovat|potrebujem\s+financov|potřebuj[ií]\s+financov)/i;
 const EXIT_SCENARIO = /(kontakt|reklamac|gdpr|obchodn[ií]\s+podm|doprav|zavol|telefon|info@)/i;
 
@@ -166,10 +166,11 @@ function getSessionCar(session) {
     if (session.selectedCar) {
         return PRODUCTS.find(function (p) { return p.url === session.selectedCar.url; }) || session.selectedCar;
     }
-    const fromText = findProductInText(allConversationText(session));
+    const userOnly = userTexts(session).join(" ");
+    const fromText = findProductInText(userOnly);
     if (fromText) return fromText;
     for (let i = 0; i < PRODUCTS.length; i++) {
-        if (allConversationText(session).indexOf(PRODUCTS[i].url) !== -1) return PRODUCTS[i];
+        if (userOnly.indexOf(PRODUCTS[i].url) !== -1) return PRODUCTS[i];
     }
     return null;
 }
@@ -247,7 +248,7 @@ function buildFinanceIntakeMessage(prefs, followUp) {
             : "Financování vyřídíme přímo u nás přes **Moneta Auto**. Napište mi prosím **do jedné zprávy**:");
 
     return intro + "\n• " + lines.join("\n• ")
-        + "\n\nPříklad: „Passat, bez akontace, nižší splátka\".";
+        + "\n\nPříklad: „název vozu z nabídky, bez akontace, nižší splátka\".";
 }
 
 function matchProductsFromPrefs(prefs, max) {
