@@ -721,6 +721,7 @@
         if (!text || !text.trim()) return;
         text = text.trim();
         input.value = "";
+        hideRedirectBar();
 
         addMessage(text, "user", false, true);
         showSearching();
