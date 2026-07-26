@@ -46,8 +46,8 @@ const CASES = [
       forbid: ["14 dnů bez důvodu"] },
 
     { id: "hledam-auto-budget", lang: "cs", q: "hledám auto do 500 tisíc, co doporučíte?",
-      must: [["palivo", "benzín", "diesel", "elektro", "typ", "město", "suv"]],
-      forbid: [] },
+      must: [["palivo", "převodov", "prevodov", "rozpočet", "cenu", "jedné zprávy", "jedne zpravy"]],
+      forbid: ["e-up", "passat"] },
 
     { id: "skladem", lang: "cs", q: "máte skladem Škodu Octavii?",
       must: [["nemám", "neuvád", "nabídk", "autoaws.cz", "777 834 466", "ověř"]],

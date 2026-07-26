@@ -30,56 +30,73 @@ function assert(cond, msg) {
     console.log("Scénáře test @ " + BASE);
     let passed = 0, failed = 0;
 
-    // ── Scénář 1: výběr auta ──
+    // ── Scénář 1: výběr auta (1 doptávací zpráva + doporučení) ──
     try {
         let sid = null;
-        let d = await chat("Hledám auto do 500 tisíc", sid);
+        let d = await chat("Hledám auto", sid);
         sid = d.session_id;
-        assert(/palivo|benzín|diesel|elektro/i.test(d.response), "krok1: měl se zeptat na palivo");
-        assert(!/e-up|passat/i.test(d.response), "krok1: ještě nemá doporučovat");
+        assert(/palivo/i.test(d.response), "krok1: měl zmínit palivo");
+        assert(/převodov|prevodov/i.test(d.response), "krok1: měl zmínit převodovku");
+        assert(/rozpočet|cenu|tisíc/i.test(d.response), "krok1: měl zmínit rozpočet");
+        assert(/jedné zprávy|jedne zpravy/i.test(d.response), "krok1: měl požádat o jednu zprávu");
+        assert(!d.recommended_links || d.recommended_links.length === 0, "krok1: žádné přesměrování");
 
-        d = await chat("Elektro", sid);
-        assert(/typ|město|suv|kombi/i.test(d.response), "krok2: měl se zeptat na typ");
-
-        d = await chat("Do města", sid);
-        assert(/značk|vw|škoda|jedno/i.test(d.response), "krok3: měl se zeptat na značku");
-
-        d = await chat("VW", sid);
-        assert(/e-up|379/i.test(d.response), "krok4: měl doporučit e-up");
-        assert(d.recommended_links && d.recommended_links.length >= 1, "krok4: měl vrátit odkaz");
-        console.log("OK  car-finder (4 kroky)");
+        d = await chat("do 500 tisíc, elektro, automat, do města, VW, max 100 tisíc km", sid);
+        assert(/e-up|379/i.test(d.response), "krok2: měl doporučit e-up");
+        assert(d.recommended_links && d.recommended_links.length >= 1, "krok2: přesměrování až na konci");
+        console.log("OK  car-finder (2 kroky)");
         passed++;
     } catch (e) {
         console.log("FAIL car-finder", e.message);
         failed++;
     }
 
-    // ── Scénář 2: financování ──
+    // ── Scénář 2: financování s konkrétním autem ──
     try {
         let sid = null;
         let d = await chat("Zajímá mě financování auta", sid);
         sid = d.session_id;
-        assert(/vůz|cenov|relac|passat|tisíc/i.test(d.response), "fin1: měl se zeptat na vůz/cenu");
+        assert(/konkrétní auto|konkretni auto|passat|e-up/i.test(d.response), "fin1: měl chtít konkrétní auto");
+        assert(/akontac/i.test(d.response), "fin1: měl zmínit akontaci");
+        assert(/splátk|splatk/i.test(d.response), "fin1: měl zmínit splátky");
+        assert(!d.recommended_links || d.recommended_links.length === 0, "fin1: žádné přesměrování");
 
-        d = await chat("Passat kolem 450 tisíc", sid);
-        assert(/akontac|100\s*%/i.test(d.response), "fin2: měl se zeptat na akontaci");
-
-        d = await chat("Bez akontace, co nejvíc", sid);
-        assert(/splátk|splacen|měsíční/i.test(d.response), "fin3: měl se zeptat na splátky");
-
-        d = await chat("Nižší splátka", sid);
-        assert(/moneta/i.test(d.response), "fin4: měl zmínit Moneta");
-        assert(/84|100\s*%/i.test(d.response), "fin4: měl zmínit podmínky");
+        d = await chat("Passat, bez akontace, nižší splátka", sid);
+        assert(/passat/i.test(d.response), "fin2: měl zmínit Passat");
+        assert(/447|tisíc/i.test(d.response), "fin2: měl uvést cenu Passatu");
+        assert(/moneta/i.test(d.response), "fin2: měl zmínit Moneta");
         assert(d.recommended_links && d.recommended_links.some(function (l) {
             return l.url && l.url.indexOf("financovani") !== -1;
-        }), "fin4: měl vrátit odkaz na financování");
-        console.log("OK  financing (4 kroky)");
+        }), "fin2: odkaz na financování až na konci");
+        console.log("OK  financing (2 kroky)");
         passed++;
     } catch (e) {
         console.log("FAIL financing", e.message);
         failed++;
     }
 
-    console.log("\n" + passed + "/2 passed");
+    // ── Propojení: auto → financování stejné session ──
+    try {
+        let sid = null;
+        let d = await chat("Hledám auto do 500 tisíc", sid);
+        sid = d.session_id;
+        d = await chat("elektro, automat, do města, VW", sid);
+        assert(/e-up/i.test(d.response), "link1: doporučil auto");
+
+        d = await chat("Dá se to financovat?", sid);
+        assert(/e-up|379/i.test(d.response), "link2: financování k e-up");
+        assert(/moneta/i.test(d.response), "link2: Moneta");
+
+        d = await chat("bez akontace, nižší splátka", sid);
+        assert(/379|e-up/i.test(d.response), "link3: cena e-up");
+        assert(/moneta/i.test(d.response), "link3: Moneta");
+        console.log("OK  car-then-finance");
+        passed++;
+    } catch (e) {
+        console.log("FAIL car-then-finance", e.message);
+        failed++;
+    }
+
+    console.log("\n" + passed + "/3 passed");
     process.exit(failed > 0 ? 1 : 0);
 })();

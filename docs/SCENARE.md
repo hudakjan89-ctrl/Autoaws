@@ -1,117 +1,100 @@
 # Scénáře chatbota Auto AWS
 
-Chatbot podporuje **2 hlavní vícekrokové scénáře** — nejdřív se doptá, pak doporučí. Logika je v `scenarios.js`.
+Chatbot má **2 hlavní scénáře** s přirozeným průběhem — ptá se **více věcí najednou v jedné zprávě**, přesměrování ukáže **až na konci**.
 
 ---
 
-## Scénář 1: Výběr auta (car finder)
+## Scénář 1: Výběr auta
 
-**Spuštění:** „Hledám auto…", „Chci auto do 500 tisíc", „Co doporučíte?", „Potřebuji vybrat auto"
+**Spuštění:** „Hledám auto", „Chci vybrat vůz", „Co doporučíte?"
 
-### Průběh konverzace
-
-| Krok | Kdo | Zpráva |
-|------|-----|--------|
-| 1 | **Uživatel** | Hledám auto do 500 tisíc. |
-| 1 | **Bot** | Rád pomůžu s výběrem. **Jaké palivo preferujete?** Benzín, diesel, nebo elektro? |
-| 2 | **Uživatel** | Elektro. |
-| 2 | **Bot** | **Jaký typ auta hledáte?** Spíš menší do města, kombi/sedan na delší trasy, nebo SUV? |
-| 3 | **Uživatel** | Do města, ideálně VW. |
-| 3 | **Bot** | **Máte preferenci značky?** (VW, Škoda, Audi, Seat, Cupra…) — nebo je to jedno? |
-| 4 | **Uživatel** | VW mi stačí. |
-| 4 | **Bot** | Na základě toho doporučí konkrétní vůz z nabídky + odkaz + nabídka financování / prohlídky |
-
-### Příklad finální odpovědi bota
+### Krok 1 — bot se zeptá najednou (1 zpráva)
 
 ```
-Na základě toho, co jste mi řekl/a, bych doporučil:
+Rád pomůžu s výběrem! Abych našel vhodný vůz, napište mi prosím do jedné zprávy:
+• orientační rozpočet / cenu (např. do 500 tisíc)
+• palivo (benzín, diesel, elektro)
+• převodovku (manuál / automat)
+• typ auta (do města, kombi, SUV…)
+• značku, pokud vám na ní záleží
+• případně max. nájezd v km
+• případně ročník nebo stáří vozu
+
+Stačí stručně — třeba: „do 500 tisíc, diesel, automat, kombi, max. 150 tisíc km".
+```
+
+→ **Žádné přesměrování** — jen text v chatu.
+
+### Krok 2 — uživatel odpoví jednou větou
+
+**Uživatel:** `do 500 tisíc, elektro, automat, do města, VW, max 100 tisíc km`
+
+**Bot:** doporučí konkrétní vůz + cenu + odkaz → **teprve teď** karta Ano/Ne na inzerát.
+
+### Příklad finále
+
+```
+Na základě vašich požadavků bych doporučil:
 
 **Volkswagen e-up! 61kW Style** — 379 000 Kč s DPH.
-Nejlevnější elektromobil v nabídce — ideální do města, nízké provozní náklady.
+Nejlevnější elektromobil v nabídce — ideální do města.
 
-[Volkswagen e-up! 61kW Style LED Kamera APP](https://autoaws.cz/automobily/...)
-
-Chcete probrat financování, nebo si domluvit prohlídku v showroomu?
-Zavolejte na +420 777 834 466 nebo napište na info@autoaws.cz.
+Chcete probrat financování k tomuto vozu, nebo si domluvit prohlídku?
 ```
-
-→ Zobrazí se **karta přesměrování** (Ano / Ne) na odkaz vozu.
-
-### Co se bot ptá (v tomto pořadí)
-
-1. Rozpočet (pokud chybí)
-2. Palivo (benzín / diesel / elektro)
-3. Typ (město / kombi / SUV)
-4. Značka (nebo „je to jedno")
 
 ---
 
-## Scénář 2: Financování
+## Scénář 2: Financování (vždy k konkrétnímu autu)
 
-**Spuštění:** „Chci financování", „Dá se to na splátky?", „Kolik by byla měsíční splátka?", „Moneta Auto"
+**Spuštění:** „Zajímá mě financování", „Dá se to na splátky?", „Kolik by byla splátka?"
 
-### Průběh konverzace
+### Varianta A — uživatel ještě neřekl, jaké auto
 
-| Krok | Kdo | Zpráva |
-|------|-----|--------|
-| 1 | **Uživatel** | Zajímá mě financování auta. |
-| 1 | **Bot** | Financování vyřídíme přes **Moneta Auto**. **O jaký vůz jde, nebo v jaké cenové relaci plánujete nakupovat?** |
-| 2 | **Uživatel** | Passat kolem 450 tisíc. |
-| 2 | **Bot** | **Plánujete akontaci**, nebo chcete financovat co nejvíc z ceny vozu (až 100 %)? |
-| 3 | **Uživatel** | Bez akontace, co nejvíc. |
-| 3 | **Bot** | **Preferujete spíš nižší měsíční splátku** (delší splácení až 84 měsíců), nebo **rychlejší splacení**? |
-| 4 | **Uživatel** | Nižší splátka. |
-| 4 | **Bot** | Shrnutí + podmínky Moneta Auto + odkaz na financování + kontakt |
-
-### Příklad finální odpovědi bota
-
+**Krok 1 — bot se zeptá najednou:**
 ```
-Shrnu to pro vás:
+Financování vyřídíme přímo u nás přes Moneta Auto. Napište mi prosím do jedné zprávy:
+• konkrétní auto z naší nabídky (např. Passat, e-up!, Cupra Born…)
+• zda plánujete akontaci, nebo financovat co nejvíc z ceny
+• zda preferujete nižší splátku, nebo rychlejší splacení
 
-- Cenová relace: do cca 450 000 Kč
-- Akontace: spíš minimální / až 100 % financování
-- Splátky: spíš nižší měsíční splátka (delší období)
-
-**Financování přes Moneta Auto:**
-- až 100 % ceny vozu
-- splácení až 84 měsíců (7 let)
-- vyřízení na místě v Uherském Brodě
-- potřebujete občanku a výpis z účtu
-
-Přesné splátky závisí na bonitě — rádi to spočítáme osobně.
-Více na Financování (autoaws.cz/financovani/).
-
-Chcete si domluvit termín? Zavolejte na +420 777 834 466.
+Příklad: „Passat, bez akontace, nižší splátka".
 ```
 
-→ Zobrazí se **karta přesměrování** na `/financovani/`.
+**Krok 2 — uživatel:** `Passat, bez akontace, nižší splátka`
+
+**Bot:** shrnutí **k Passatu za 447 000 Kč** + Moneta Auto + odkaz na /financovani/
+
+### Varianta B — uživatel právě vybral auto (scénář 1)
+
+**Uživatel:** `Dá se to financovat?`
+
+**Bot** (už zná vůz z konverzace):
+```
+Ano, vůz Volkswagen e-up! (379 000 Kč s DPH) u nás financovat jde — přes Moneta Auto,
+až 100 % ceny, splácení až 84 měsíců…
+
+Napište prosím: akontaci? nižší splátku nebo rychlejší splacení?
+```
+
+**Uživatel:** `bez akontace, nižší splátka` → finální výpočet k **tomu samému vozu**.
 
 ---
 
 ## Propojení scénářů
 
-Typický tok zákazníka:
+```
+Výběr auta  →  doporučení vozu  →  „Dá se financovat?"  →  financování k tomu vozu
+```
 
-1. **Výběr auta** → doporučení vozu
-2. Uživatel: „A dá se to financovat?" → **Scénář financování** (bot už zná vůz z konverzace)
-
----
-
-## Ostatní dotazy (bez scénáře)
-
-| Otázka | Chování |
-|--------|---------|
-| Obchodní podmínky | FAQ odpověď, bez přesměrování na neexistující stránku |
-| Kontakt | Telefon, e-mail, adresa showroomu |
-| Reklamace, GDPR, Doprava | FAQ + případná karta přesměrování |
+Auto se pamatuje v session (`selectedCar`) — financování vždy sedí na konkrétní vůz a jeho cenu.
 
 ---
 
-## Katalog vozů (`knowledge/products.json`)
+## Katalog vozů
 
-| Vůz | Cena | Vhodné pro |
-|-----|------|------------|
-| VW e-up! | 379 000 Kč | město, elektro, rozpočet do 400k |
-| VW Passat 2.0 TDi | 447 000 Kč | diesel, delší trasy, do 500k |
-| Cupra Born | 569 000 Kč | sportovnější elektro |
-| Seat Ateca FR Line | 614 000 Kč | rodinné SUV, benzín |
+| Vůz | Cena | Palivo | Typ |
+|-----|------|--------|-----|
+| VW e-up! | 379 000 Kč | elektro | městské |
+| VW Passat 2.0 TDi | 447 000 Kč | diesel | kombi |
+| Cupra Born | 569 000 Kč | elektro | kompaktní |
+| Seat Ateca FR Line | 614 000 Kč | benzín | SUV |

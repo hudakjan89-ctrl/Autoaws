@@ -230,7 +230,8 @@ function getOrCreateSession(sessionId, clientHistory) {
         lastActive: Date.now(),
         messageCount: restored.length,
         restored: restored.length > 0,
-        scenario: null
+        scenario: null,
+        selectedCar: null
     };
     sessions.set(id, session);
     if (restored.length) STATS.sessionsRestored++;
@@ -1004,6 +1005,7 @@ app.post("/chat", rateLimit, validateCsrf, async (req, res) => {
         if (scenOut && scenOut.reply) {
             botReply = scenOut.reply;
             servedFrom = "scenario";
+            if (scenOut.selectedCar) session.selectedCar = scenOut.selectedCar;
         }
 
         // 2) Cache: většina lidí se ptá na totéž. Platí jen pro první zprávu
