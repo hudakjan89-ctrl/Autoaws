@@ -9,6 +9,7 @@ const crypto = require("crypto");
 const path = require("path");
 const fs = require("fs");
 const DEFAULTS = require("./config");
+const { handleScenario } = require("./scenarios");
 require("dotenv").config();
 
 function cfg(key) {
@@ -228,7 +229,8 @@ function getOrCreateSession(sessionId, clientHistory) {
         messages: restored,
         lastActive: Date.now(),
         messageCount: restored.length,
-        restored: restored.length > 0
+        restored: restored.length > 0,
+        scenario: null
     };
     sessions.set(id, session);
     if (restored.length) STATS.sessionsRestored++;
@@ -592,6 +594,11 @@ function stripKbMeta(t) {
 // Např. „kolik stojí Magnum…" jinak vytáhne seznam značek, protože slovo
 // „Magnum" přebije cenový dotaz. Tyhle odpovědi jsou pevné.
 const INTENT_OVERRIDES = [
+    {
+        test: /(nab[ií]z[ií]te|m[aá]te)\s+(financov|uver|úv[eě]r|spl[aá]tk)/i,
+        answer: "Financování nabízíme přes **Moneta Auto** — až **100 %** ceny vozu, splácení až **84 měsíců**, vyřízení **na místě** v Uherském Brodě. Potřebujete **občanku** a **výpis z účtu**.\n\n"
+              + "Více na [Financování](https://autoaws.cz/financovani/). Chcete spočítat konkrétní splátku k vozu? Napište mi, o jaké auto jde."
+    },
     {
         test: /(obchodn[ií]\s+podm[ií]n|obchodne\s+podmien|terms\s+and\s+conditions|agb|podmínky\s+prodeje)/i,
         answer: "Na webu autoaws.cz není samostatná veřejná stránka Obchodní podmínky — konkrétní smluvní podmínky (kupní smlouva, záruka, reklamace) se řeší individuálně při koupi s prodejcem.\n\n"
@@ -992,22 +999,29 @@ app.post("/chat", rateLimit, validateCsrf, async (req, res) => {
         let botReply = null;
         let servedFrom = "llm";
 
-        // 1) Cache: většina lidí se ptá na totéž. Platí jen pro první zprávu
+        // 1) Vícekrokové scénáře (výběr auta, financování) — má přednost před cache/LLM
+        const scenOut = handleScenario(session, message);
+        if (scenOut && scenOut.reply) {
+            botReply = scenOut.reply;
+            servedFrom = "scenario";
+        }
+
+        // 2) Cache: většina lidí se ptá na totéž. Platí jen pro první zprávu
         //    v konverzaci, aby se nezahodil kontext navazujících dotazů.
         const ck = cacheKey(message, lang);
-        if (session.messages.length <= 1) {
+        if (!botReply && session.messages.length <= 1) {
             const cached = cacheGet(ck);
             if (cached) { botReply = cached; servedFrom = "cache"; STATS.cacheHits++; }
         }
 
-        // 2) Strop souběžnosti: když je LLM zahlcené, odpovíme rovnou z báze.
+        // 3) Strop souběžnosti: když je LLM zahlcené, odpovíme rovnou z báze.
         //    Přesná odpověď za 5 ms je lepší než správná za 36 s.
         if (!botReply && HAS_LLM && llmInflight >= LLM_MAX_INFLIGHT) {
             const quick = matchIntentOverride(message) || answerFromKB(message);
             if (quick) { botReply = quick; servedFrom = "kb_overload"; STATS.kbOverload++; }
         }
 
-        // 2.5) Kritické FAQ — deterministická odpověď bez LLM (obchodní podmínky, GDPR, reklamace…)
+        // 2.6) Kritické FAQ — deterministická odpověď bez LLM (obchodní podmínky, GDPR, reklamace…)
         if (!botReply) {
             const intentAns = matchIntentOverride(message);
             if (intentAns) { botReply = intentAns; servedFrom = "intent_override"; }

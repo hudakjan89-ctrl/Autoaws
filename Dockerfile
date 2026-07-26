@@ -5,7 +5,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 
-COPY server.js config.js vercel.json ./
+COPY server.js config.js scenarios.js vercel.json ./
 COPY knowledge ./knowledge
 COPY public ./public
 
