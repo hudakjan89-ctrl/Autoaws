@@ -39,13 +39,13 @@
     width: 66px;
     height: 66px;
     border-radius: 50%;
-    background: #ffffff;
+    background: transparent;
     border: none;
     box-shadow: 0 10px 28px -6px rgba(var(--brand-rgb), 0.45), 0 4px 12px rgba(0,0,0,0.12);
     display:flex;
     align-items:center;
     justify-content:center;
-    padding: 5px;
+    padding: 0;
     cursor:pointer;
     z-index: 2147483640 !important;
     animation: float 5s ease-in-out infinite;
@@ -110,9 +110,16 @@
     justify-content:center;
     border-radius: 50%;
     overflow: hidden;
+    background: linear-gradient(145deg, #0E1739 0%, #090F25 100%);
 }
 
-.bot-img{ width: 100%; height: 100%; object-fit: cover; }
+.bot-img{
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    border-radius: 50%;
+}
 
 .eniq-badge{
     position: absolute;
@@ -224,16 +231,22 @@
     width: 42px;
     height: 42px;
     border-radius: 50%;
-    background: #ffffff;
+    background: linear-gradient(145deg, #0E1739 0%, #090F25 100%);
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 3px;
+    padding: 0;
     flex-shrink: 0;
-    box-shadow: 0 0 0 3px rgba(255,255,255,0.22), 0 4px 12px rgba(0,0,0,0.18);
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.28), 0 4px 12px rgba(0,0,0,0.18);
 }
-.chat-header-avatar .bot-img{ object-fit: cover; }
+.chat-header-avatar .bot-img{
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    border-radius: 50%;
+}
 
 .chat-header-title{ font-weight: 700; font-size: 17px; line-height: 1.2; letter-spacing: .1px; }
 
@@ -362,11 +375,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: transparent;
+    background: linear-gradient(145deg, #0E1739 0%, #090F25 100%);
     margin-top: 1px;
     border: none;
 }
-.message-avatar .bot-img{ object-fit: cover; }
+.message-avatar .bot-img{
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    border-radius: 50%;
+}
 .message.user .message-avatar { display: none !important; }
 
 .message-content{
@@ -1185,13 +1204,19 @@
     width: 42px;
     height: 42px;
     border-radius: 50%;
-    background: #fff;
+    background: linear-gradient(145deg, #0E1739 0%, #090F25 100%);
     box-shadow: 0 0 0 1px rgba(18,18,40,0.06), 0 4px 10px -3px rgba(0,0,0,0.18);
-    padding: 3px;
+    padding: 0;
     flex-shrink: 0;
+    overflow: hidden;
 }
-.invite-avatar{ overflow: hidden; }
-.invite-avatar .bot-img{ width: 100%; height: 100%; object-fit: cover; }
+.invite-avatar .bot-img{
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    border-radius: 50%;
+}
 .invite-avatar .launcher-online{ width: 12px; height: 12px; border-width: 2px; bottom: 0; right: 0; }
 .invite-name{ font-weight: 700; font-size: 15.5px; color: var(--ink); line-height: 1.2; }
 .invite-status{
