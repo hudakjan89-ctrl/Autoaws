@@ -553,64 +553,66 @@
 .powered-by a:hover{ color: var(--brand); }
 .eniq-panel.dark-mode .powered-by{ border-top-color: #2a2530; }
 
-/* ============== Redirect Bar (mimo chat) ============== */
-.redirect-bar{
-    display: none;
-    margin: 0;
-    padding: 10px 14px 0;
-    border-top: 1px solid var(--line);
-    background: linear-gradient(180deg, rgba(var(--brand-rgb),0.06), transparent);
-    animation: slideUp 0.25s ease-out;
+/* ============== Redirect card (pod zprávou bota) ============== */
+.redirect-card-wrap{
+    padding-left: 40px;
+    margin: 4px 0 14px 0;
+    animation: slideUp 0.28s ease-out;
 }
-.redirect-bar.visible{ display: block; }
-.redirect-bar-inner{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    flex-wrap: wrap;
-    padding: 10px 12px;
-    background: #fff;
-    border: 1px solid rgba(var(--brand-rgb),0.2);
-    border-radius: 12px;
-    box-shadow: var(--shadow-soft);
+.redirect-card{
+    max-width: 92%;
+    background: #ffffff;
+    border: 1px solid #e8ecf4;
+    border-radius: 14px;
+    padding: 14px 16px 12px;
+    box-shadow: 0 4px 18px -6px rgba(14, 23, 57, 0.12);
 }
-.redirect-bar-text{
-    flex: 1 1 180px;
+.redirect-card-title{
+    font-size: 15px;
+    font-weight: 800;
+    color: #0e1739;
+    margin-bottom: 6px;
+    letter-spacing: -0.2px;
+}
+.redirect-card-prompt{
     font-size: 13px;
-    font-weight: 600;
-    color: var(--brand-deep);
-    line-height: 1.35;
+    font-weight: 500;
+    color: #5b6478;
+    line-height: 1.45;
+    margin-bottom: 12px;
 }
-.redirect-bar-buttons{
+.redirect-card-buttons{
     display: flex;
     gap: 8px;
-    flex-shrink: 0;
 }
-.redirect-bar-btn{
-    padding: 8px 16px;
+.redirect-card-btn{
+    flex: 1;
+    padding: 10px 12px;
     border-radius: 10px;
     font-size: 13px;
     font-weight: 700;
     cursor: pointer;
     border: none;
-    transition: all 0.2s;
+    transition: all 0.18s;
 }
-.redirect-bar-btn-yes{
-    background: linear-gradient(150deg, var(--brand-2), var(--brand));
+.redirect-card-btn-yes{
+    background: linear-gradient(150deg, #182761, #0e1739);
     color: #fff;
-    box-shadow: 0 4px 10px -2px rgba(var(--brand-rgb), 0.4);
+    box-shadow: 0 4px 12px -3px rgba(14, 23, 57, 0.45);
 }
-.redirect-bar-btn-yes:hover{ transform: translateY(-1px); }
-.redirect-bar-btn-no{
-    background: #eef0f3;
-    color: #5b616e;
+.redirect-card-btn-yes:hover{ transform: translateY(-1px); }
+.redirect-card-btn-no{
+    background: #eef1f6;
+    color: #5b6478;
 }
-.redirect-bar-btn-no:hover{ background: #e2e5e9; }
-.eniq-panel.dark-mode .redirect-bar{ border-top-color: #2a2530; background: linear-gradient(180deg, rgba(var(--brand-rgb),0.08), transparent); }
-.eniq-panel.dark-mode .redirect-bar-inner{ background: #221c28; border-color: #342b3c; }
-.eniq-panel.dark-mode .redirect-bar-text{ color: #f3f4f6; }
-.eniq-panel.dark-mode .redirect-bar-btn-no{ background: #2a2330; color: #cbd0d8; }
+.redirect-card-btn-no:hover{ background: #e2e7ef; }
+.eniq-panel.dark-mode .redirect-card{
+    background: #221c28;
+    border-color: #342b3c;
+}
+.eniq-panel.dark-mode .redirect-card-title{ color: #f3f4f6; }
+.eniq-panel.dark-mode .redirect-card-prompt{ color: #b8c0d0; }
+.eniq-panel.dark-mode .redirect-card-btn-no{ background: #2a2330; color: #cbd0d8; }
 
 /* ============== Page Link Prompt (legacy – unused) ============== */
 .page-link-prompt {

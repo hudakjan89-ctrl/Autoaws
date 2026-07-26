@@ -62,7 +62,6 @@
     const animToggle      = document.getElementById("animToggle");
     const fontSelect      = document.getElementById("fontSelect");
     const consentBox      = document.getElementById("consentBox");
-    const redirectBar       = document.getElementById("redirectBar");
     const voiceView       = document.getElementById("voiceView");
     const modeChatBtn     = document.getElementById("modeChatBtn");
     const modeVoiceBtn    = document.getElementById("modeVoiceBtn");
@@ -84,6 +83,7 @@
     let listening      = false;
     let inviteTimer    = null;
     let inviteAutoTimer = null;
+    let redirectCardEl  = null;
 
     // ── Texts – Auto AWS ─────────────────────────────────
     const UI_TEXT = {
@@ -95,19 +95,20 @@
             themeLabel: "Tmavý režim",
             error: "Omlouvám se, něco se pokazilo. Zkuste to prosím znovu, nebo napište na info@autoaws.cz.",
             showOnPage: "Chcete přejít do sekce",
-            btnYes: "Ano",
-            btnNo: "Ne",
+            redirectPrompt: "Našel jsem vhodný odkaz. Chcete se na něj podívat?",
+            btnYes: "Ano, přejít",
+            btnNo: "Ne, díky",
             redirecting: "Přesměrovávám…",
-            terms: "Na webu autoaws.cz není samostatná stránka <strong>Obchodní podmínky</strong> — konkrétní smlouva se řeší při koupi. Obecné info: <strong>autoaws.cz/financovani</strong>, <strong>autoaws.cz/zaruka</strong>, <strong>autoaws.cz/kontakt</strong>. Dotazy: <strong>+420 777 834 466</strong>.",
-            shipping: "Auto AWS je prodejce vozů — <strong>zásilková doprava se neuplatňuje</strong>. Vůz si převezmete v showroomu v Uherském Brodě (Cihlářská 422), ideálně po domluvě na <strong>+420 777 834 466</strong>. Financování na místě: <strong>autoaws.cz/financovani</strong>.",
-            contact: "Zavolejte na <strong>+420 777 834 466</strong> nebo napište na <strong>info@autoaws.cz</strong>. Provozovna Po–Pá 9:00–17:00, So 9:00–11:00. Adresa: Cihlářská 422, Havřice, 688 01 Uherský Brod. Více: <strong>autoaws.cz/kontakt</strong>.",
-            returns: "Reklamace se řeší podle zákona a kupní smlouvy. Kontaktujte prodejce na <strong>+420 777 834 466</strong> nebo <strong>info@autoaws.cz</strong>. Info o záruce: <strong>autoaws.cz/zaruka</strong>.",
-            gdpr: "Zásady zpracování osobních údajů: <strong>autoaws.cz/zpracovani-osobnich-udaju</strong>. Správcem je provozovatel Auto AWS (Vít Hauerland), nikoli poskytovatel chatbota.",
-            articles: "Na webu není blog ani sekce Návody. Užitečné informace: <strong>autoaws.cz/automobily</strong>, <strong>autoaws.cz/financovani</strong>, <strong>autoaws.cz/zaruka</strong>. K dotazu k vozu: <strong>+420 777 834 466</strong>.",
-            about: "<strong>Auto AWS</strong> prodává a dováží koncernové automobily (Audi, VW, Škoda, Seat, Cupra) z Německa od roku 1998. Showroom v Uherském Brodě. Více: <strong>autoaws.cz/kontakt</strong>.",
-            promo: "Veřejný seznam akcí na webu není. U některých vozů je <strong>záruka zdarma</strong> — autoaws.cz/zaruka. Individuální slevy ověřte na <strong>+420 777 834 466</strong>.",
-            food: "V nabídce máme především značky <strong>Audi, Volkswagen, Škoda, Seat a Cupra</strong> — mladší vozy dovezené z Německa. Nabídka: <strong>autoaws.cz/automobily</strong>.",
-            treats: "Nabízíme <strong>financování přes Moneta Auto</strong> — až 100 % ceny vozu, splácení až 84 měsíců. Více: <strong>autoaws.cz/financovani</strong>."
+            terms: "Na webu autoaws.cz není samostatná stránka Obchodní podmínky — konkrétní smlouva se řeší při koupi s prodejcem. Obecné informace o financování, záruce a pojištění vám rádi sdělíme na +420 777 834 466.",
+            shipping: "Auto AWS je prodejce vozů — zásilková doprava se neuplatňuje. Vůz si převezmete v showroomu v Uherském Brodě (Cihlářská 422), ideálně po domluvě na +420 777 834 466. Financování vyřídíme na místě.",
+            contact: "Zavolejte na +420 777 834 466 nebo napište na info@autoaws.cz. Provozovna Po–Pá 9:00–17:00, So 9:00–11:00. Adresa: Cihlářská 422, Havřice, 688 01 Uherský Brod.",
+            returns: "Reklamace se řeší podle zákona a kupní smlouvy. Kontaktujte prodejce na +420 777 834 466 nebo info@autoaws.cz.",
+            gdpr: "Zásady zpracování osobních údajů najdete na webu Auto AWS. Správcem je provozovatel Auto AWS (Vít Hauerland), nikoli poskytovatel chatbota.",
+            articles: "Na webu není blog ani sekce Návody. Užitečné informace najdete v nabídce automobilů, financování a záruce — nebo nám napište na +420 777 834 466.",
+            about: "Auto AWS prodává a dováží koncernové automobily (Audi, VW, Škoda, Seat, Cupra) z Německa od roku 1998. Showroom v Uherském Brodě.",
+            promo: "Veřejný seznam akcí na webu není. U některých vozů je záruka zdarma. Individuální slevy ověřte na +420 777 834 466.",
+            food: "V nabídce máme především značky Audi, Volkswagen, Škoda, Seat a Cupra — mladší vozy dovezené z Německa.",
+            treats: "Nabízíme financování přes Moneta Auto — až 100 % ceny vozu, splácení až 84 měsíců. Vyřízení na místě."
         },
         sk: {
             food: "Krmivá vedieme pre psov, mačky, hlodavce, vtáctvo aj akva-teru – granule, konzervy, kapsičky aj varené krmivo. Značky <strong>Magnum Dog Food</strong>, <strong>Alpha Spirit</strong>, <strong>Profine</strong>, <strong>Brit</strong>. Napíšte mi, pre aké zviera vyberáte.",
@@ -177,7 +178,7 @@
 
     // Doplnění chybějících polí u ostatních jazyků (fallback na češtinu)
     (function fillUiDefaults() {
-        var keys = ["welcome", "welcomeHtml", "placeholder", "expandLabel", "themeLabel", "error", "showOnPage", "btnYes", "btnNo", "redirecting",
+        var keys = ["welcome", "welcomeHtml", "placeholder", "expandLabel", "themeLabel", "error", "showOnPage", "redirectPrompt", "btnYes", "btnNo", "redirecting",
             "terms", "shipping", "contact", "returns", "gdpr", "articles", "about", "promo", "food", "treats"];
         ["sk", "en", "de", "fr", "es", "it", "pl", "uk"].forEach(function (lang) {
             if (!UI_TEXT[lang]) UI_TEXT[lang] = {};
@@ -656,36 +657,42 @@
         }
     }
 
-    // ── Redirect bar (mimo chat-box) ─────────────────────────
-    function hideRedirectBar() {
-        if (!redirectBar) return;
-        redirectBar.hidden = true;
-        redirectBar.innerHTML = "";
-        redirectBar.classList.remove("visible");
+    // ── Redirect card (pod zprávou bota, mimo bublinu) ─────
+    function hideRedirectCard() {
+        if (redirectCardEl) {
+            redirectCardEl.remove();
+            redirectCardEl = null;
+        }
     }
 
-    function showRedirectBar(url, sectionTitle) {
-        if (!redirectBar || !url) return;
+    function showRedirectCard(url, sectionTitle) {
+        if (!url || !chatBox) return;
+        hideRedirectCard();
         var ui = UI_TEXT[selectedLang] || UI_TEXT.cs;
-        var title = sectionTitle || "";
-        redirectBar.innerHTML = "";
-        redirectBar.hidden = false;
-        redirectBar.classList.add("visible");
+        var title = sectionTitle || "Odkaz";
 
-        var inner = document.createElement("div");
-        inner.className = "redirect-bar-inner";
+        var wrap = document.createElement("div");
+        wrap.className = "redirect-card-wrap";
+        redirectCardEl = wrap;
 
-        var text = document.createElement("div");
-        text.className = "redirect-bar-text";
-        text.textContent = ui.showOnPage + (title ? " " + title + "?" : "?");
+        var card = document.createElement("div");
+        card.className = "redirect-card";
+
+        var titleEl = document.createElement("div");
+        titleEl.className = "redirect-card-title";
+        titleEl.textContent = title;
+
+        var promptEl = document.createElement("div");
+        promptEl.className = "redirect-card-prompt";
+        promptEl.textContent = ui.redirectPrompt || "Našel jsem vhodný odkaz. Chcete se na něj podívat?";
 
         var buttons = document.createElement("div");
-        buttons.className = "redirect-bar-buttons";
+        buttons.className = "redirect-card-buttons";
 
         var btnYes = document.createElement("button");
         btnYes.type = "button";
-        btnYes.className = "redirect-bar-btn redirect-bar-btn-yes";
-        btnYes.textContent = ui.btnYes;
+        btnYes.className = "redirect-card-btn redirect-card-btn-yes";
+        btnYes.textContent = ui.btnYes || "Ano, přejít";
         btnYes.onclick = function () {
             btnYes.disabled = true;
             btnYes.textContent = ui.redirecting;
@@ -700,20 +707,35 @@
 
         var btnNo = document.createElement("button");
         btnNo.type = "button";
-        btnNo.className = "redirect-bar-btn redirect-bar-btn-no";
-        btnNo.textContent = ui.btnNo || "Ne";
-        btnNo.onclick = function () { hideRedirectBar(); };
+        btnNo.className = "redirect-card-btn redirect-card-btn-no";
+        btnNo.textContent = ui.btnNo || "Ne, díky";
+        btnNo.onclick = function () { hideRedirectCard(); };
 
         buttons.appendChild(btnYes);
         buttons.appendChild(btnNo);
-        inner.appendChild(text);
-        inner.appendChild(buttons);
-        redirectBar.appendChild(inner);
+        card.appendChild(titleEl);
+        card.appendChild(promptEl);
+        card.appendChild(buttons);
+        wrap.appendChild(card);
+        chatBox.appendChild(wrap);
+        scrollToBottom();
     }
 
     function maybeShowRedirectFromLinks(links) {
         if (!links || links.length !== 1 || !links[0] || !links[0].url) return;
-        showRedirectBar(links[0].url, links[0].title || null);
+        showRedirectCard(links[0].url, links[0].title || null);
+    }
+
+    function plainBotText(text) {
+        if (!text) return "";
+        return String(text)
+            .replace(/<[^>]+>/g, "")
+            .replace(/\*\*([^*]+)\*\*/g, "$1")
+            .replace(/\*([^*]+)\*/g, "$1")
+            .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+            .replace(/https?:\/\/\S+/g, "")
+            .replace(/\n{3,}/g, "\n\n")
+            .trim();
     }
 
     // ── Send message ────────────────────────────────────────
@@ -721,7 +743,7 @@
         if (!text || !text.trim()) return;
         text = text.trim();
         input.value = "";
-        hideRedirectBar();
+        hideRedirectCard();
 
         addMessage(text, "user", false, true);
         showSearching();
@@ -750,7 +772,7 @@
             sessionId = data.session_id;
             sessionStorage.setItem("session_id", sessionId);
 
-            addMessage(data.response, "bot", true, true, true, function () {
+            addMessage(plainBotText(data.response), "bot", true, true, true, function () {
                 maybeShowRedirectFromLinks(data.recommended_links);
             });
         })
@@ -947,7 +969,7 @@
     // Nothing is deleted from any database — only the customer's on-screen history.
     function clearConversation() {
         chatBox.innerHTML = "";
-        hideRedirectBar();
+        hideRedirectCard();
         sessionStorage.removeItem("eniq_chat_history");
         sessionStorage.removeItem("session_id");
         sessionId = null;
@@ -1646,7 +1668,7 @@
     }
 
     function closeChat() {
-        hideRedirectBar();
+        hideRedirectCard();
         // Always release the mic on close — between turns voiceActive is false but the
         // stream stays alive for instant turns, so guard on the stream too (no leak).
         if (voiceStream || voiceActive) stopVoiceSession();
@@ -1798,10 +1820,10 @@
                 showSearching();
                 setTimeout(function () {
                     removeSearching();
-                    addMessage(actionAns, "bot", true, true, true);
+                    addMessage(plainBotText(actionAns), "bot", true, true, true);
                     var meta = getQuickActionMeta(action);
                     if (meta && meta.redirect) {
-                        showRedirectBar(meta.redirect, meta.redirectLabel || meta.label);
+                        showRedirectCard(meta.redirect, meta.redirectLabel || meta.label);
                     }
                 }, 650);
             }
