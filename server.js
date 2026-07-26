@@ -50,14 +50,19 @@ const GOOGLE_SPEED = parseFloat(process.env.GOOGLE_TTS_SPEED || "1.0"); // natur
 const _googleVoiceCache = {}; // langCode → chosen voice name
 
 // ── CORS ────────────────────────────────────────────────
+function isAllowedOrigin(origin) {
+    if (!origin) return true;
+    if (ALLOWED_ORIGINS.includes("*") || ALLOWED_ORIGINS.includes(origin)) return true;
+    // Coolify / sslip.io demo hosty — bez nutnosti měnit ALLOWED_ORIGINS při každém redeployi
+    try {
+        var host = new URL(origin).hostname.toLowerCase();
+        if (host.endsWith(".sslip.io") || host === "sslip.io") return true;
+    } catch (e) { /* neplatná URL */ }
+    return false;
+}
 app.use(cors({
     origin: function (origin, callback) {
-        // No Origin header (same-origin, curl, server-to-server) → allow
-        if (!origin) return callback(null, true);
-        // Wildcard (embeddable widget / demo) or explicit allow-list
-        if (ALLOWED_ORIGINS.includes("*") || ALLOWED_ORIGINS.includes(origin)) {
-            return callback(null, true);
-        }
+        if (isAllowedOrigin(origin)) return callback(null, true);
         return callback(new Error("Nepovolený origin: " + origin));
     },
     credentials: true
@@ -374,7 +379,7 @@ const KB_URLS = (function () {
     const re = /https?:\/\/[^\s)\]"'<>]+/gi;
     let m;
     while ((m = re.exec(KB_TEXT))) {
-        set.add(m[0].replace(/[.,;]+$/, "").replace(/\/$/, "").toLowerCase());
+        set.add(m[0].replace(/[*.,;]+$/, "").replace(/\/$/, "").toLowerCase());
     }
     PRODUCTS.forEach(function (p) {
         if (p.url) set.add(p.url.replace(/\/$/, "").toLowerCase());
@@ -613,7 +618,7 @@ const INTENT_OVERRIDES = [
     },
     {
         test: /(gdpr|osobn[ií]\s+údaj[eě]?|osobni\s+udaj[e]?|zpracov[aá]n[ií]\s+údaj|ochran[aá]\s+údaj|soukrom[ií])/i,
-        answer: "Zásady zpracování osobních údajů najdete na webu Auto AWS v sekci Ochrana osobních údajů (autoaws.cz/zpracovani-osobnich-udaju).\n\n"
+        answer: "Zásady zpracování osobních údajů najdete na webu Auto AWS v sekci [Ochrana osobních údajů](https://autoaws.cz/zpracovani-osobnich-udaju/).\n\n"
               + "Správcem osobních údajů je provozovatel Auto AWS (Vít Hauerland), nikoli poskytovatel chatbota. Údaje slouží výhradně k vyřízení vašeho dotazu."
     },
     {
@@ -1423,6 +1428,7 @@ app.get(["/api/health", "/health"], (req, res) => {
     res.json({
         status: "ok",
         service: "autoaws-chatbot",
+        llm: { configured: HAS_LLM, provider: HAS_EUROUTER ? "eurouter" : null, model: HAS_EUROUTER ? EUROUTER_MODEL : null },
         uptimeSec: Math.round(up / 1000),
         kb: { sections: KB_SECTIONS.length, bytes: KB_TEXT.length, urls: KB_URLS.size },
         sessions: sessions.size,

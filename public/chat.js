@@ -40,6 +40,43 @@
             .catch(function () { /* token endpoint not available in embed mode */ });
     }
 
+    function ensureCsrfToken() {
+        if (csrfToken) return Promise.resolve(csrfToken);
+        return fetchCsrfToken();
+    }
+
+    function postChat(body) {
+        return ensureCsrfToken().then(function () {
+            return fetch(BASE_URL + "/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-Token": csrfToken || ""
+                },
+                body: JSON.stringify(body)
+            });
+        }).then(function (r) {
+            if (r.status === 403) {
+                return fetchCsrfToken().then(function () {
+                    return fetch(BASE_URL + "/chat", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-Token": csrfToken || ""
+                        },
+                        body: JSON.stringify(body)
+                    });
+                });
+            }
+            return r;
+        }).then(function (r) {
+            return r.json().then(function (data) {
+                if (!r.ok) throw new Error((data && data.error) || ("HTTP " + r.status));
+                return data;
+            });
+        });
+    }
+
     fetchCsrfToken();
 
     // ── DOM refs ────────────────────────────────────────────
@@ -750,23 +787,14 @@
 
         var currentUrl = window.location.href;
 
-        fetch(BASE_URL + "/chat", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-Token": csrfToken || ""
-            },
-            body: JSON.stringify({
-                message: text,
-                session_id: sessionId,
-                language: selectedLang,
-                current_page: currentUrl,
-                mode: "chat",
-                // záloha kontextu pro případ, že server běží serverless a ztratil session
-                history: getRecentHistoryForServer()
-            })
+        postChat({
+            message: text,
+            session_id: sessionId,
+            language: selectedLang,
+            current_page: currentUrl,
+            mode: "chat",
+            history: getRecentHistoryForServer()
         })
-        .then(function (r) { return r.json(); })
         .then(function (data) {
             removeSearching();
             sessionId = data.session_id;
@@ -1820,11 +1848,12 @@
                 showSearching();
                 setTimeout(function () {
                     removeSearching();
-                    addMessage(plainBotText(actionAns), "bot", true, true, true);
                     var meta = getQuickActionMeta(action);
-                    if (meta && meta.redirect) {
-                        showRedirectCard(meta.redirect, meta.redirectLabel || meta.label);
-                    }
+                    addMessage(plainBotText(actionAns), "bot", true, true, true, function () {
+                        if (meta && meta.redirect) {
+                            showRedirectCard(meta.redirect, meta.redirectLabel || meta.label);
+                        }
+                    });
                 }, 650);
             }
         } else if (target.closest("#settingsBtn")) {
