@@ -1270,7 +1270,7 @@ body.eniq-dark .invite-popup{ }
 .invite-dark .invite-text{ color: #c9cdd6; }
 .invite-dark .invite-close{ background: rgba(255,255,255,0.08); color: #cbd0d8; }
 .invite-dark .invite-close:hover{ background: rgba(255,255,255,0.16); color: #fff; }
-.invite-dark .invite-avatar{ background: #fff; }
+.invite-dark .invite-avatar{ background: linear-gradient(145deg, #0E1739 0%, #090F25 100%); }
 
 @media (max-width: 600px){
     .invite-popup{
