@@ -261,9 +261,20 @@ Když informaci nemáš ověřenou, řekni to otevřeně a nasměruj na +420 777
 Nepiš zdi textu. Používej strukturu a odrážky. Odpovídej v jazyce zákazníka.
 
 # DOPORUČOVÁNÍ VOZŮ A ODKAZŮ
-- Odkaz piš vždy jako markdown: [Text odkazu](URL).
+- Odkaz piš vždy jako markdown: [Název vozu nebo sekce](URL).
 - URL smíš použít JEN tehdy, když je DOSLOVA uvedena v KONTEXTU níže.
 - Když adresu nemáš, napiš jen název nebo kategorii BEZ odkazu.
+
+# SCÉNÁŘ: HLEDÁNÍ AUTA
+Když zákazník hledá vůz (rozpočet, typ, značka, „chci auto"):
+1. Pokud nemáš dost info, zeptej se krátce (max 2–3 otázky): rozpočet v Kč, palivo (benzín/diesel/elektro), typ (SUV/sedan/město), značka nebo ročník.
+2. Až máš dost údajů, doporuč 1–2 konkrétní vozy z KONTEXTU — s cenou, krátkým komentářem proč se hodí.
+3. Každý doporučený vůz uveď jako markdown odkaz na samostatném řádku: [Název vozu](URL).
+4. Nabídni další krok: financování, prohlídka showroomu, nebo telefon +420 777 834 466.
+5. „50k" nebo „500 tisíc" v češtině u aut znamená obvykle **500 000 Kč** (pět set tisíc korun).
+
+# OBCHODNÍ PODMÍNKY
+Když se zákazník ptá na obchodní podmínky: vysvětli, že konkrétní smlouva se řeší při koupi, a odkaž na relevantní sekce webu (financování, záruka, pojištění, kontakt) nebo na info@autoaws.cz. Nevymýšlej právní text.
 
 # KDY PŘEDAT NA ČLOVĚKA
 Individuální cena, sleva, skladová dostupnost konkrétního vozu, termín dodání, reklamace k posouzení, a cokoliv označené v KONTEXTU jako UNKNOWN.
@@ -282,6 +293,70 @@ try {
 }
 const HAS_KB = KB_TEXT.length > 0;
 
+// Katalog vozů pro doporučení (knowledge/products.json)
+let PRODUCTS = [];
+try {
+    PRODUCTS = JSON.parse(fs.readFileSync(path.join(__dirname, "knowledge", "products.json"), "utf8"));
+} catch (e) {
+    console.warn("Katalog vozů nenačten:", e.message);
+}
+
+function parseBudgetCzk(text) {
+    if (!text) return null;
+    const low = deacc(text);
+    let m = low.match(/do\s+(\d{1,3})\s*(tisic|tisíc|k|tis)/);
+    if (m) return parseInt(m[1], 10) * 1000;
+    m = low.match(/do\s+(\d[\d\s]{2,8})\s*(kc|kč)?/);
+    if (m) {
+        const n = parseInt(m[1].replace(/\s/g, ""), 10);
+        if (n >= 10000 && n <= 5000000) return n;
+    }
+    m = low.match(/(\d{2,3})\s*k\b/);
+    if (m) {
+        let n = parseInt(m[1], 10) * 1000;
+        // U aut „50k" často znamená 500 000 Kč (pětistovka), ne 50 000
+        if (n < 100000 && /(auto|vuz|voz|automobil|skoda|vw|audi)/.test(low)) n *= 10;
+        return n;
+    }
+    return null;
+}
+
+function matchProducts(message, max) {
+    max = max || 3;
+    if (!PRODUCTS.length) return [];
+    const low = deacc(message || "");
+    const budget = parseBudgetCzk(message);
+    let list = PRODUCTS.slice();
+    if (budget) list = list.filter(function (p) { return p.price_czk <= budget; });
+    const brands = ["volkswagen", "vw", "skoda", "audi", "seat", "cupra", "lexus", "mercedes"];
+    for (let i = 0; i < brands.length; i++) {
+        if (low.indexOf(brands[i]) !== -1) {
+            const b = brands[i] === "vw" ? "volkswagen" : brands[i];
+            const filtered = list.filter(function (p) {
+                return deacc(p.brand).indexOf(b) !== -1 || deacc(p.name).indexOf(b) !== -1;
+            });
+            if (filtered.length) list = filtered;
+            break;
+        }
+    }
+    if (/elektr|bev|ev\b/.test(low)) list = list.filter(function (p) { return p.fuel === "elektro"; });
+    if (/diesel|naft/.test(low)) list = list.filter(function (p) { return p.fuel === "diesel"; });
+    if (/benzin|benzín|benz/.test(low)) list = list.filter(function (p) { return p.fuel === "benzín"; });
+    if (/suv|terenn/.test(low)) list = list.filter(function (p) { return p.type === "SUV"; });
+    list.sort(function (a, b) { return a.price_czk - b.price_czk; });
+    return list.slice(0, max);
+}
+
+function productsContext(message) {
+    const hits = matchProducts(message, 3);
+    if (!hits.length) return "";
+    return "\n\n=== AKTUÁLNÍ VOZY Z NABÍDKY (pro doporučení — použij přesné URL) ===\n" +
+        hits.map(function (p) {
+            return "- " + p.name + " | " + p.price_czk.toLocaleString("cs-CZ") + " Kč s DPH | " + p.fuel +
+                " | " + p.note + "\n  URL: " + p.url;
+        }).join("\n");
+}
+
 // ── Whitelist reálných URL (anti-halucinace) ────────────
 // Odkaz smí odejít k zákazníkovi jen tehdy, když se doslova vyskytuje ve znalostní bázi.
 const KB_URLS = (function () {
@@ -291,6 +366,9 @@ const KB_URLS = (function () {
     while ((m = re.exec(KB_TEXT))) {
         set.add(m[0].replace(/[.,;]+$/, "").replace(/\/$/, "").toLowerCase());
     }
+    PRODUCTS.forEach(function (p) {
+        if (p.url) set.add(p.url.replace(/\/$/, "").toLowerCase());
+    });
     return set;
 })();
 
@@ -846,8 +924,9 @@ app.post("/chat", rateLimit, validateCsrf, async (req, res) => {
                 .slice(-2).map(function (m) { return m.content; }).join(" ");
             // Voice mode: smaller KB context → faster first token (lower latency before the reply starts).
             const kb = HAS_KB ? selectKB(recentUser || message, mode === "voice" ? 2500 : 4000) : "";
-            const kbBlock = kb
-                ? "\n\n=== ZNALOSTNÍ BÁZE (relevantní výňatky — autoritativní zdroj; odpovídej PŘEDNOSTNĚ z těchto dat; když tu odpověď není, řekni to a nasměruj na podporu) ===\n" + kb
+            const prodCtx = productsContext(recentUser || message);
+            const kbBlock = (kb || prodCtx)
+                ? "\n\n=== ZNALOSTNÍ BÁZE (relevantní výňatky — autoritativní zdroj; odpovídej PŘEDNOSTNĚ z těchto dat; když tu odpověď není, řekni to a nasměruj na podporu) ===\n" + kb + prodCtx
                 : "";
             llmInflight++;
             try {
@@ -964,14 +1043,14 @@ app.post("/chat-voice-stream", rateLimit, validateCsrf, async (req, res) => {
     res.end();
 });
 
-// Derive a readable product title from a tenesco.cz URL slug (fallback when label is generic)
+// Derive a readable product title from an autoaws.cz URL slug (fallback when label is generic)
 function titleFromUrl(u) {
     try {
         var seg = u.split("?")[0].replace(/\/+$/, "").split("/").pop() || "";
         seg = decodeURIComponent(seg).replace(/[-_]+/g, " ").trim();
-        if (!seg || /\.(pdf|html?)$/i.test(seg)) return "TENESCO";
+        if (!seg || /\.(pdf|html?)$/i.test(seg)) return "Auto AWS";
         return seg.charAt(0).toUpperCase() + seg.slice(1);
-    } catch (e) { return "TENESCO"; }
+    } catch (e) { return "Auto AWS"; }
 }
 
 // Pull product/category links out of the LLM reply → clickable buttons {title, url}
@@ -989,7 +1068,7 @@ function extractLinks(text) {
         out.push({ title: label, url: url });
     }
     if (out.length < 3) {
-        var re2 = /(https?:\/\/(?:www\.)?(?:tenesco\.cz|[a-z0-9.-]*petgo\.cz)[^\s)\]]*)/gi, b;
+        var re2 = /(https?:\/\/(?:www\.)?autoaws\.cz[^\s)\]]*)/gi, b;
         while ((b = re2.exec(text)) && out.length < 3) {
             var u = b[1].replace(/[.,;]+$/, "");
             if (seen[u]) continue; seen[u] = 1;

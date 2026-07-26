@@ -41,6 +41,14 @@ const CASES = [
       must: [["autoaws.cz/automobily", "nabídk", "inzerát", "777 834 466", "nemám", "neuvád"]],
       forbid: ["stojí 500", "stojí 1", "cca 200"] },
 
+    { id: "obchodni-podminky", lang: "cs", q: "jaké jsou vaše obchodní podmínky?",
+      must: [["podmín", "smlouv"], ["financov", "záruk", "zaruk", "pojišt", "kontakt", "info@autoaws.cz", "777 834 466"]],
+      forbid: ["14 dnů bez důvodu"] },
+
+    { id: "hledam-auto-budget", lang: "cs", q: "hledám auto do 500 tisíc, co doporučíte?",
+      must: [["e-up", "passat", "379", "447", "autoaws.cz/automobily"]],
+      forbid: [] },
+
     { id: "skladem", lang: "cs", q: "máte skladem Škodu Octavii?",
       must: [["nemám", "neuvád", "nabídk", "autoaws.cz", "777 834 466", "ověř"]],
       forbid: ["ano, máme skladem"] },

@@ -241,3 +241,89 @@ Auto AWS má pozitivní hodnocení zákazníků. Na webu jsou uvedeny reference 
 
 TYP ZNALOSTI: fakt
 KLÍČOVÁ SLOVA: reference, recenze, hodnocení, spokojení zákazníci, top firma
+
+---
+
+# 8. OBCHODNÍ PODMÍNKY A PRÁVNÍ INFORMACE
+
+## 8.1 Obchodní podmínky
+
+Na webu **autoaws.cz** není samostatná veřejná stránka „Obchodní podmínky" v navigaci. Konkrétní smluvní podmínky k prodeji vozu (kupní smlouva, záruka, reklamace) se řeší **individuálně při koupi** s prodejcem.
+
+Pro obecné informace o prodeji vozů, financování a záruce použijte sekce tohoto webu:
+- Financování: https://autoaws.cz/financovani/
+- Záruka: https://autoaws.cz/zaruka/
+- Pojištění: https://autoaws.cz/pojisteni/
+- Kontakt: https://autoaws.cz/kontakt/
+
+Pro přesné znění podmínek k vaší koupi volejte **+420 777 834 466** nebo pište na **info@autoaws.cz**.
+
+TYP ZNALOSTI: fakt
+KLÍČOVÁ SLOVA: obchodní podmínky, podmínky, smlouva, kupní smlouva, právní, terms, conditions, reklamace, odpovědnost
+
+## 8.2 Reklamace a odpovědnost za vady
+
+Reklamace a práva z vadného plnění se řeší podle platné české legislativy a podmínek uvedených v kupní smlouvě. Konkrétní postup u konkrétního vozu posoudí prodejce — kontakt **+420 777 834 466**.
+
+TYP ZNALOSTI: fakt
+KLÍČOVÁ SLOVA: reklamace, vada, závada, oprava, stížnost
+
+## 8.3 Ochrana osobních údajů
+
+Zásady zpracování osobních údajů: **https://autoaws.cz/zpracovani-osobnich-udaju/**
+
+Správce: Vít Hauerland / Auto AWS.
+
+TYP ZNALOSTI: fakt
+KLÍČOVÁ SLOVA: gdpr, osobní údaje, ochrana údajů, soukromí
+
+---
+
+# 9. DOPORUČENÉ VOZY Z AKTUÁLNÍ NABÍDKY
+
+Tyto vozy jsou ověřené z nabídky autoaws.cz. Ceny jsou s DPH k datu vložení do báze — vždy ověřte aktuální stav na odkazu.
+
+## 9.1 Volkswagen e-up! 61kW Style — 379 000 Kč
+
+- URL: https://autoaws.cz/automobily/Volkswagen-e-up!-61kW-Style-LED-Kamera-APP-969009
+- Palivo: elektro
+- Vhodné pro: město, krátké trasy, nízký rozpočet na elektromobil
+
+KLÍČOVÁ SLOVA: e-up, levné auto, do 400 tisíc, elektromobil město, malé auto
+
+## 9.2 Volkswagen Passat 2,0 TDi DSG Business — 447 000 Kč
+
+- URL: https://autoaws.cz/automobily/Volkswagen-Passat-2,0-TDi-DSG-Business-IQ-Light-Kamera-969545
+- Palivo: diesel
+- Vhodné pro: delší trasy, úsporná jízda, služební i rodinné použití
+
+KLÍČOVÁ SLOVA: passat, diesel, do 500 tisíc, kombi, sedan, dsg
+
+## 9.3 Cupra Born 150kW — 569 000 Kč
+
+- URL: https://autoaws.cz/automobily/Cupra-Born-150kW-LED-Tepelko-Kamera-968739
+- Palivo: elektro
+- Vhodné pro: sportovnější jízdu, moderní elektromobil s tepelným čerpadlem
+
+KLÍČOVÁ SLOVA: cupra born, elektromobil, sport
+
+## 9.4 Seat Ateca 1,5 TSi FR Line — 614 000 Kč
+
+- URL: https://autoaws.cz/automobily/Seat-Ateca-1,5-TSi-DSG-FR-Line-Virtual-LED-ACC-882279
+- Palivo: benzín
+- Vhodné pro: rodinné SUV, benzín, FR Line výbava
+
+KLÍČOVÁ SLOVA: ateca, suv, benzín, rodina
+
+## 9.5 Jak doporučovat vůz (pro asistenta)
+
+Když zákazník hledá auto (např. „hledám auto do 500 tisíc"):
+1. Zeptej se na chybějící preference: palivo, typ karoserie, značka, ročník.
+2. Doporuč max 1–2 vozy z této sekce, které sedí rozpočtu a požadavkům.
+3. Uveď cenu a krátký důvod.
+4. Přidej markdown odkaz [Název vozu](URL).
+5. Nabídni financování (https://autoaws.cz/financovani/) nebo kontakt.
+
+TYP ZNALOSTI: interní
+KLÍČOVÁ SLOVA: hledám auto, doporuč, rozpočet, do 500 tisíc, do 50 tisíc, budget, chci auto
+

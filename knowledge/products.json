@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Volkswagen e-up! 61kW Style LED Kamera APP",
+    "brand": "Volkswagen",
+    "price_czk": 379000,
+    "fuel": "elektro",
+    "type": "městské",
+    "url": "https://autoaws.cz/automobily/Volkswagen-e-up!-61kW-Style-LED-Kamera-APP-969009",
+    "note": "Nejlevnější elektromobil v nabídce — ideální do města, nízké provozní náklady."
+  },
+  {
+    "name": "Volkswagen Passat 2,0 TDi DSG Business IQ Light Kamera",
+    "brand": "Volkswagen",
+    "price_czk": 447000,
+    "fuel": "diesel",
+    "type": "kombi/sedan",
+    "url": "https://autoaws.cz/automobily/Volkswagen-Passat-2,0-TDi-DSG-Business-IQ-Light-Kamera-969545",
+    "note": "Úsporný diesel, DSG, Business výbava — vhodný na delší trasy i služebně."
+  },
+  {
+    "name": "Cupra Born 150kW LED Tepelko Kamera",
+    "brand": "Cupra",
+    "price_czk": 569000,
+    "fuel": "elektro",
+    "type": "kompaktní",
+    "url": "https://autoaws.cz/automobily/Cupra-Born-150kW-LED-Tepelko-Kamera-968739",
+    "note": "Sportovnější elektromobil s tepelným čerpadlem a bohatou výbavou."
+  },
+  {
+    "name": "Seat Ateca 1,5 TSi DSG FR Line Virtual LED ACC",
+    "brand": "Seat",
+    "price_czk": 614000,
+    "fuel": "benzín",
+    "type": "SUV",
+    "url": "https://autoaws.cz/automobily/Seat-Ateca-1,5-TSi-DSG-FR-Line-Virtual-LED-ACC-882279",
+    "note": "Rodinné SUV, benzín, FR Line, adaptivní tempomat."
+  }
+]
